@@ -1,0 +1,2202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DETONANTE | Espacio de Lecturas y Culturas Digitales</title>
+  <link rel="icon" type="image/png" href="favicon_detonante_web.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FAF6EE;
+      --orange: #FF5500;
+      --orange-hover: #E04B00;
+      --blue: #0047AB;
+      --yellow: #FFD000;
+      --text: #1C1C1C;
+      --muted: #555550;
+      --card-bg: #FFFFFF;
+      --border: #E8E2D2;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, .serif {
+      font-family: 'Lora', Georgia, serif;
+    }
+
+    /* BARRA SUPERIOR */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background: rgba(250, 246, 238, 0.98);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid var(--border);
+    }
+    .nav-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      font-family: 'Lora', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .brand img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .menu-toggle-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      cursor: pointer;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .menu-toggle-btn:hover {
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    /* MENÚ LATERAL OSCURO */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 1100;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .sidebar-overlay.open {
+      display: block;
+      opacity: 1;
+    }
+    .sidebar-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 320px;
+      max-width: 85vw;
+      height: 100vh;
+      background: #181818;
+      color: #FFF;
+      z-index: 1200;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .sidebar-drawer.open {
+      transform: translateX(0);
+    }
+    .sidebar-header {
+      padding: 16px 20px;
+      display: flex;
+      justify-content: flex-end;
+      border-bottom: 1px solid #2A2A2A;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      color: #FFF;
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .close-btn:hover {
+      color: var(--orange);
+    }
+    .sidebar-nav ul {
+      list-style: none;
+      padding: 14px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .sidebar-nav a {
+      display: block;
+      padding: 14px 24px;
+      color: #D1D1D1;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1.4;
+      transition: all 0.18s ease;
+      cursor: pointer;
+      position: relative;
+      border-left: 4px solid transparent;
+    }
+    .sidebar-nav a:hover {
+      color: var(--orange);
+      background: rgba(255, 85, 0, 0.12);
+      border-left-color: var(--orange);
+      padding-left: 30px;
+    }
+    .sidebar-nav a.active {
+      color: #FFFFFF;
+      font-weight: 700;
+      background: rgba(255, 85, 0, 0.25);
+      border-left-color: var(--orange);
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    main {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+    }
+
+    .view-section {
+      display: none;
+      animation: fadeIn 0.2s ease-in-out forwards;
+    }
+    .view-section.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* HERO BANNER EDITORIAL */
+    .hero-banner-wrap {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      background-color: var(--bg);
+      line-height: 0;
+    }
+    .hero-banner-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* MANIFIESTO */
+    .manifesto-card {
+      background: var(--card-bg);
+      border-left: 6px solid var(--orange);
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 36px;
+      box-shadow: var(--shadow);
+    }
+    .manifesto-card h2 {
+      font-size: 1.45rem;
+      line-height: 1.4;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .manifesto-card h2 span { color: var(--orange); }
+    .manifesto-card p {
+      font-size: 0.98rem;
+      color: var(--muted);
+    }
+
+    /* GRILLA DE ACCESOS DESTACADOS */
+    .shortcuts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .shortcut-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .shortcut-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--orange);
+    }
+    .shortcut-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .shortcut-info {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .shortcut-info h3 {
+      font-size: 1.2rem;
+      color: var(--orange);
+      margin-bottom: 6px;
+    }
+    .shortcut-info p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      flex-grow: 1;
+      margin-bottom: 14px;
+    }
+    .shortcut-action {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    /* ENCABEZADOS DE PÁGINAS INTERNAS */
+    .subpage-header {
+      background: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .subpage-header img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-bottom: 2px solid var(--border);
+    }
+    .subpage-content {
+      padding: 24px 28px;
+    }
+    .subpage-content h2 {
+      font-size: 1.75rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    /* TARJETAS DE CONTENIDO GENERAL */
+    .content-card {
+      background: var(--card-bg);
+      padding: 28px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+    .badge-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      background-color: rgba(255, 85, 0, 0.12);
+      color: var(--orange);
+    }
+    .badge-tag.blue {
+      background-color: rgba(0, 71, 171, 0.12);
+      color: var(--blue);
+    }
+
+    /* CATÁLOGO DE RECURSOS */
+    .catalog-search-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .search-field {
+      width: 100%;
+      padding: 12px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .search-field:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(255, 85, 0, 0.15);
+    }
+    .tags-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tag-btn {
+      padding: 7px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tag-btn:hover, .tag-btn.active {
+      background: var(--orange);
+      color: #FFF;
+      border-color: var(--orange);
+    }
+
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .resource-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .resource-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--orange);
+    }
+    .resource-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .resource-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      object-fit: contain;
+      background: #FAF6EE;
+      padding: 4px;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .resource-title {
+      font-size: 1.15rem;
+      color: var(--blue);
+      font-weight: 700;
+    }
+    .field-box {
+      margin-top: 10px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .field-label {
+      font-weight: 700;
+      color: var(--text);
+      display: block;
+      margin-bottom: 2px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .field-dest {
+      background: var(--bg);
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .field-val {
+      background: #FFF9F5;
+      padding: 10px 14px;
+      border-left: 3px solid var(--orange);
+      border-radius: 0 6px 6px 0;
+      color: #2A2A2A;
+      font-style: italic;
+    }
+    .tool-link, .resource-link {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--orange);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .tool-link:hover, .resource-link:hover { text-decoration: underline; }
+
+    /* NOTAS POST-IT INTERACTIVAS PARA CITAS */
+    .postit-note {
+      background: #FFFDF0;
+      border: 1px solid #E8E2C8;
+      border-left: 5px solid var(--yellow);
+      border-radius: 4px;
+      padding: 14px 18px;
+      margin-top: 16px;
+      box-shadow: 2px 4px 10px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    .postit-note.orange {
+      border-left-color: var(--orange);
+      background: #FFF9F5;
+    }
+    .postit-note.blue {
+      border-left-color: var(--blue);
+      background: #F4F8FD;
+    }
+    .postit-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .postit-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .postit-text {
+      font-family: 'Inter', monospace, sans-serif;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #2C2C2C;
+      background: rgba(0,0,0,0.03);
+      padding: 8px 12px;
+      border-radius: 4px;
+      word-break: break-word;
+    }
+    .copy-citation-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+    .copy-citation-btn:hover {
+      background: var(--orange);
+      color: #FFFFFF;
+      border-color: var(--orange);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 2px solid var(--border);
+      background: var(--card-bg);
+      padding: 32px 20px;
+      margin-top: 50px;
+      text-align: center;
+    }
+    footer img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-bottom: 8px;
+      object-fit: cover;
+    }
+    footer p {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    footer span {
+      font-weight: 700;
+      color: var(--orange);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA SUPERIOR -->
+  <header>
+    <div class="nav-container">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <button class="menu-toggle-btn" onclick="toggleMenu()" aria-label="Abrir menú">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div class="brand" onclick="navigate('inicio')">
+          <img src="logotipo_detonante_web.png" alt="Logo Detonante">
+          <span>DETONANTE</span>
+        </div>
+      </div>
+      <span style="font-size: 0.85rem; color: var(--muted); font-weight: 500;">Espacio de Lecturas y Culturas Digitales</span>
+    </div>
+  </header>
+
+  <!-- PANEL LATERAL DESPLEGABLE -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleMenu()"></div>
+  <aside class="sidebar-drawer" id="sidebar-drawer">
+    <div class="sidebar-header">
+      <button class="close-btn" onclick="toggleMenu()" aria-label="Cerrar menú">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a onclick="selectNav('inicio')" onmouseenter="playTick()" id="nav-inicio" class="active">Inicio</a></li>
+        <li><a onclick="selectNav('propuesta')" onmouseenter="playTick()" id="nav-propuesta">Propuesta de Alfabetización</a></li>
+        <li><a onclick="selectNav('recursos')" onmouseenter="playTick()" id="nav-recursos">Recursos</a></li>
+        <li><a onclick="selectNav('aprendizaje')" onmouseenter="playTick()" id="nav-aprendizaje">Aprendizaje significativo</a></li>
+        <li><a onclick="selectNav('sitios')" onmouseenter="playTick()" id="nav-sitios">Sitios recomendados</a></li>
+        <li><a onclick="selectNav('articulos')" onmouseenter="playTick()" id="nav-articulos">Artículos académicos / periodísticos</a></li>
+        <li><a onclick="selectNav('nos-preguntamos')" onmouseenter="playTick()" id="nav-nos-preguntamos">Nos preguntamos</a></li>
+        <li><a onclick="selectNav('poster')" onmouseenter="playTick()" id="nav-poster">Póster</a></li>
+        <li><a onclick="selectNav('accesibilidad')" onmouseenter="playTick()" id="nav-accesibilidad">Accesibilidad desde la Biblioteca Escolar</a></li>
+        <li><a onclick="selectNav('innovacion')" onmouseenter="playTick()" id="nav-innovacion">Innovación en la Biblioteca Escolar</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+
+    <!-- 1. INICIO -->
+    <section id="view-inicio" class="view-section active">
+      <div class="hero-banner-wrap">
+        <img src="D E T O N A N T E_Banner (1920 x 1080 px).gif" alt="Banner Detonante Espacio de Lecturas y Culturas Digitales">
+      </div>
+
+      <div class="manifesto-card">
+        <h2>La biblioteca no es un depósito silencioso: es un <span>espacio de combustión cultural</span>.</h2>
+        <p>
+          Vivimos en un ecosistema saturado de estímulos, pantallas veloces y flujos informativos incesantes. Frente a la sobreabundancia de datos y la automatización algorítmica, <strong>Detonante</strong> se propone como un punto de encuentro, debate y creación. Concebimos la multialfabetización como un derecho insoslayable: interrogar a las tecnologías, auditar las imágenes, producir sentidos propios y revitalizar la lectura crítica.
+        </p>
+      </div>
+
+      <div class="shortcuts-grid">
+        <div class="shortcut-card" onclick="navigate('propuesta')">
+          <img src="D E T O N A N T E_Banner.png" alt="Propuesta de Alfabetización">
+          <div class="shortcut-info">
+            <h3>Propuesta de Alfabetización</h3>
+            <p>Hackeando el algoritmo: taller de creación de portadas literarias inclusivas y análisis de sesgos con IA.</p>
+            <span class="shortcut-action">Explorar programa pedagógico →</span>
+          </div>
+        </div>
+
+        <div class="shortcut-card" onclick="navigate('recursos')">
+          <img src="D E T O N A N T E_Banner (1).png" alt="Guía de Recursos">
+          <div class="shortcut-info">
+            <h3>Guía de Recursos</h3>
+            <p>29 herramientas curadas con sus logos oficiales para potenciar la mediación y el aprendizaje significativo.</p>
+            <span class="shortcut-action">Abrir catálogo interactivo →</span>
+          </div>
+        </div>
+
+        <div class="shortcut-card" onclick="navigate('poster')">
+          <img src="D E T O N A N T E_Banner (2).png" alt="Educación en IA">
+          <div class="shortcut-info">
+            <h3>Educación en IA</h3>
+            <p>Infografía y reflexiones críticas para auditar sesgos algorítmicos y promover la ciudadanía digital.</p>
+            <span class="shortcut-action">Ver póster interactivo →</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. PROPUESTA DE ALFABETIZACIÓN -->
+    <section id="view-propuesta" class="view-section">
+      <div class="subpage-header">
+        <img src="D E T O N A N T E_Banner.png" alt="Propuesta de Alfabetización">
+        <div class="subpage-content">
+          <span class="badge-tag">Programa Curricular de Alfabetización Informacional</span>
+          <h2>Hackeando el algoritmo: Creación de portadas literarias inclusivas y análisis de sesgos estéticos</h2>
+          <p style="margin-top: 6px; font-size: 0.95rem; color: var(--muted);">
+            <strong>Diseño, curaduría y mediación pedagógica:</strong> Marcia Goroz | Biblioteca Escolar en articulación con Prácticas del Lenguaje / Literatura
+          </p>
+        </div>
+      </div>
+
+      <div class="content-card" style="border-left: 5px solid var(--orange);">
+        <h3 style="color: var(--orange); margin-bottom: 14px;">Ficha Técnica del Proyecto</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; font-size: 0.9rem;">
+          <div style="background: var(--bg); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+            <strong style="color: var(--blue); display: block; margin-bottom: 4px;">Población destinataria:</strong>
+            Estudiantes del Ciclo Superior de Educación Secundaria (4.º, 5.º y 6.º año).
+          </div>
+          <div style="background: var(--bg); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+            <strong style="color: var(--blue); display: block; margin-bottom: 4px;">Espacios y cronograma:</strong>
+            3 encuentros presenciales consecutivos (40 min cada uno) en el primer trimestre. Sala de lectura y entorno virtual.
+          </div>
+          <div style="background: var(--bg); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+            <strong style="color: var(--blue); display: block; margin-bottom: 4px;">Articulación pedagógica:</strong>
+            Co-facilitación entre Bibliotecaria Escolar y Profesor/a de Prácticas del Lenguaje.
+          </div>
+          <div style="background: var(--bg); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+            <strong style="color: var(--blue); display: block; margin-bottom: 4px;">Ecosistema tecnológico:</strong>
+            Microsoft Copilot (motor DALL-E 3) y entorno digital colaborativo Padlet.
+          </div>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <span class="badge-tag blue">Marco Conceptual</span>
+        <h3 style="margin-bottom: 16px;">Fundamentación pedagógica y epistemológica</h3>
+        <div style="font-size: 0.95rem; color: var(--text); line-height: 1.8; display: flex; flex-direction: column; gap: 14px;">
+          <p>
+            Este programa formativo en Inteligencia Artificial parte desde la <strong>Biblioteca Escolar</strong>, concebida como un espacio estratégico para fortalecer la alfabetización informacional, digital y crítica. Tal como señala <strong>Cárdenas (2012)</strong>, la biblioteca debe funcionar como <em>“un eje rector de este tipo de programas”</em> (p. 257). En este sentido, la bibliotecaria escolar asume un rol formativo, mediador y facilitador, acompañando a los estudiantes en la interacción crítica con los recursos disponibles, en concordancia con los postulados de <strong>Campal García (2008)</strong>.
+          </p>
+          <p>
+            El uso de Inteligencia Artificial Generativa (IAG), como DALL-E 3, exige trascender la alfabetización informacional puramente instrumental hacia el concepto de <strong>multialfabetismo</strong> propuesto por <strong>Pasadas Ureña (2008)</strong>. Este enfoque integra la lectura profunda, la escritura, la comprensión visual y las competencias digitales complejas, permitiendo que las y los jóvenes traduzcan textos y metáforas literarias en instrucciones (<em>prompts</em>) visuales, posicionándose como creadores activos de sentido. Sin embargo, el acceso tecnológico resulta estéril si no se acompaña de una postura reflexiva: como advierte Chomsky (citado por <strong>Quevedo-Pacheco, 2014</strong>), navegar en entornos algorítmicos sin criterios de evaluación implica <em>“tomar al azar hechos no verificables que no significan nada”</em> (p. 20).
+          </p>
+          <p>
+            Por ello, el núcleo central del programa —el análisis de los sesgos estéticos y hegemónicos de la IAG— responde a los estándares ALFIN de <strong>Cortés (2012)</strong>, particularmente a la capacidad de evaluar críticamente la información y comprender <em>“las implicaciones sociales, económicas y políticas de la información”</em> (p. 210). Analizar estos sesgos posibilita desmontar estereotipos de género, raza y corporalidad reproducidos por defecto por los algoritmos masivos.
+          </p>
+          <p>
+            Psicopedagógicamente, la propuesta se asienta en el <strong>socio-constructivismo de Lev Vygotsky</strong> y las habilidades del siglo XXI: aprendizaje colaborativo, situado y articulado para la resolución de un problema auténtico. La mediación bibliotecaria opera como un <strong>andamiaje cultural</strong> que orienta la ingeniería de instrucciones y el debate colectivo (<strong>Pérez Piñón, 2012</strong>), fusionando el dominio tecnológico con la responsabilidad ética (<strong>Martí Lahera, 2007</strong>) para que los estudiantes actúen como productores críticos, autónomos y conscientes de su huella cultural.
+          </p>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <span class="badge-tag">Intencionalidades Pedagógicas</span>
+        <h3 style="margin-bottom: 16px;">Objetivos del Programa</h3>
+        <div style="background: var(--bg); padding: 18px 22px; border-radius: 8px; border-left: 4px solid var(--orange); margin-bottom: 16px;">
+          <strong style="color: var(--orange); font-size: 1rem; display: block; margin-bottom: 4px;">Objetivo General:</strong>
+          <p style="font-size: 0.92rem; color: var(--text); line-height: 1.6;">
+            Desarrollar competencias de alfabetización informacional, visual y digital mediante la creación crítica de portadas de libros con herramientas de inteligencia artificial generativa, promoviendo el uso de los recursos y servicios de la biblioteca escolar y reconociendo el rol de la bibliotecaria como mediadora esencial del aprendizaje.
+          </p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+          <div style="background: var(--card-bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+            <strong style="color: var(--blue); font-size: 0.9rem; display: block; margin-bottom: 6px;">Objetivo Específico 1:</strong>
+            <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.5;">
+              Analizar los elementos que componen una portada de libro y la información que transmite, utilizando obras del fondo bibliográfico de la biblioteca escolar para reconocer su función comunicativa, estética y promocional.
+            </p>
+          </div>
+          <div style="background: var(--card-bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+            <strong style="color: var(--blue); font-size: 0.9rem; display: block; margin-bottom: 6px;">Objetivo Específico 2:</strong>
+            <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.5;">
+              Elaborar prompts complejos para generar portadas mediante herramientas de inteligencia artificial, evaluando críticamente los resultados obtenidos e identificando posibles sesgos en las representaciones visuales producidas por estas tecnologías.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <span class="badge-tag blue">Secuencia Didáctica de Intervención</span>
+        <h3 style="margin-bottom: 10px;">Estructura de las Clases (Tres Encuentros de 40 Minutos)</h3>
+        <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 22px;">
+          Las actividades toman la portada del libro como eje articulador: integra lectura física, interpretación literaria, análisis retórico de la imagen y producción digitalizada.
+        </p>
+
+        <div style="background: var(--bg); border-radius: 10px; border: 1px solid var(--border); padding: 22px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+            <h4 style="color: var(--orange); font-size: 1.15rem;">Clase 1: La portada como comunicación visual — Exploración del fondo y automatización</h4>
+            <span style="font-size: 0.78rem; font-weight: 700; color: var(--blue); background: rgba(0,71,171,0.08); padding: 3px 8px; border-radius: 4px;">40 minutos | DALL-E 3</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem;">
+            <p><strong>Inicio (10 min):</strong> Recepción del grupo en sala de lectura. Recuperación dialógica de saberes previos: ¿Qué elementos hacen a una portada? ¿Cuál es su función comunicativa frente a la contratapa y el texto interior?</p>
+            <p><strong>Desarrollo (20 min):</strong> Selección física de obras literarias del fondo. Lectura exploratoria de contratapas y primeros capítulos. Redacción de un primer prompt elemental en DALL-E 3 para generar un boceto automatizado.</p>
+            <p><strong>Cierre (10 min):</strong> Puesta en común y exhibición general de los bocetos obtenidos. Primeras reflexiones sobre la necesidad de auditar críticamente las imágenes generadas.</p>
+          </div>
+        </div>
+
+        <div style="background: var(--bg); border-radius: 10px; border: 1px solid var(--border); padding: 22px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+            <h4 style="color: var(--orange); font-size: 1.15rem;">Clase 2: Multialfabetización crítica — Auditoría de sesgos y Prompt Engineering</h4>
+            <span style="font-size: 0.78rem; font-weight: 700; color: var(--blue); background: rgba(0,71,171,0.08); padding: 3px 8px; border-radius: 4px;">40 minutos | DALL-E 3 + Procesador</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem;">
+            <p><strong>Inicio (10 min):</strong> Retoma colectiva de los bocetos. La bibliotecaria guía el debate: ¿Por qué los algoritmos devolvieron rostros normativos o cuerpos estereotipados? Identificación de patrones algorítmicos hegemónicos.</p>
+            <p><strong>Desarrollo (20 min):</strong> Introducción a la Ingeniería de Prompts. Los estudiantes regresan al texto para rescatar adjetivos precisos, identidades culturales y contextos que desafíen la estandarización de la máquina.</p>
+            <p><strong>Cierre (10 min):</strong> Escritura en borrador de las nuevas instrucciones enriquecidas, listas para la prueba final de iteración.</p>
+          </div>
+        </div>
+
+        <div style="background: var(--bg); border-radius: 10px; border: 1px solid var(--border); padding: 22px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+            <h4 style="color: var(--orange); font-size: 1.15rem;">Clase 3: Estudiante como prodiseñador — Creación ética y socialización en red</h4>
+            <span style="font-size: 0.78rem; font-weight: 700; color: var(--blue); background: rgba(0,71,171,0.08); padding: 3px 8px; border-radius: 4px;">40 minutos | DALL-E 3 + Padlet + Papel</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem;">
+            <p><strong>Inicio (10 min):</strong> Repaso de las instrucciones complejas. Asunción del rol de prodiseñadores éticos para disputar el sentido visual y crear representaciones inclusivas.</p>
+            <p><strong>Desarrollo (20 min):</strong> Ronda de iteración técnica en DALL-E 3. Ajuste de vocabulario y sintaxis del prompt hasta alcanzar una portada que rompa el sesgo inicial.</p>
+            <p><strong>Cierre (10 min):</strong> Montaje de la Galería de Portadas en Padlet. Selección comunitaria de portadas para su impresión e incorporación como sobrecubiertas en el fondo físico de la sala.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <span class="badge-tag">Matriz Curricular</span>
+        <h3 style="margin-bottom: 14px;">Cuadro Sintético de Organización Curricular</h3>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left;">
+            <thead>
+              <tr style="background: #181818; color: #FFF;">
+                <th style="padding: 12px 14px; border: 1px solid #333;">Encuentro</th>
+                <th style="padding: 12px 14px; border: 1px solid #333;">Contenidos Conceptuales</th>
+                <th style="padding: 12px 14px; border: 1px solid #333;">Actividad de Aprendizaje</th>
+                <th style="padding: 12px 14px; border: 1px solid #333;">Responsables</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 12px 14px; font-weight: 700; color: var(--orange);">Clase 1</td>
+                <td style="padding: 12px 14px;">La portada como comunicación visual. Exploración del fondo de la biblioteca.</td>
+                <td style="padding: 12px 14px;">Selección de obras en sala. Redacción de instrucción elemental y boceto en DALL-E 3.</td>
+                <td style="padding: 12px 14px;">Bibliotecaria Escolar</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.02);">
+                <td style="padding: 12px 14px; font-weight: 700; color: var(--orange);">Clase 2</td>
+                <td style="padding: 12px 14px;">Multialfabetización crítica, sesgos algorítmicos e ingeniería de instrucciones.</td>
+                <td style="padding: 12px 14px;">Auditoría de imágenes por defecto. Rescate de vocabulario descriptivo y redacción de prompts.</td>
+                <td style="padding: 12px 14px;">Bibliotecaria Escolar & Docente de Prácticas del Lenguaje</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 12px 14px; font-weight: 700; color: var(--orange);">Clase 3</td>
+                <td style="padding: 12px 14px;">Prodiseño ético, revisión crítica y promoción de la lectura profunda.</td>
+                <td style="padding: 12px 14px;">Iteración final de sobrecubiertas inclusivas. Exhibición en Padlet e intervención física.</td>
+                <td style="padding: 12px 14px;">Bibliotecaria Escolar & Docente de Prácticas del Lenguaje</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <span class="badge-tag">Sustento Teórico</span>
+        <h3 style="margin-bottom: 16px;">Referencias Bibliográficas (Normas APA)</h3>
+        <ul style="padding-left: 20px; font-size: 0.88rem; color: var(--muted); line-height: 1.8;">
+          <li>Campal García, F. (2008). <em>Taller de formación de formadores de alfabetización informacional: planificación de Alfin</em>. e-Prints in Library and Information Science.</li>
+          <li>Cortés, J. (2012). Estándares y normas como instrumentos para el diseño y la evaluación de programas de alfabetización informacional. En <em>Didáctica básica para la alfabetización informacional</em> (pp. 201-230). Alfagrama.</li>
+          <li>Martí Lahera, Y. (2007). El programa de alfabetización informacional: características y modelos para su evaluación. En <em>Alfabetización informacional: análisis y gestión</em> (pp. 51-87). Alfagrama.</li>
+          <li>Microsoft. (2026). <em>Copilot (motor DALL-E 3)</em> [Software de computadora].</li>
+          <li>Mireles Cárdenas, C. (2012). Planeación de los programas y actividades de alfabetización informacional desde la práctica profesional. En <em>Didáctica básica para la alfabetización informacional</em> (pp. 255-275). Alfagrama.</li>
+          <li>OpenAI. (2023). <em>DALL-E 3</em> [Software de generación de imágenes].</li>
+          <li>Padlet. (s.f.). <em>Padlet</em> [Entorno colaborativo digital].</li>
+          <li>Pasadas Ureña, C. (2008). Multialfabetismo y alfabetización informacional crítica: marco de referencia para la función educativa de la biblioteca. En <em>Brecha digital y nuevas alfabetizaciones</em> (pp. 57-83). Biblioteca Complutense.</li>
+          <li>Pérez Piñón, F. (2012). Teorías del aprendizaje en la era de la alfabetización informacional. En <em>Didáctica básica para la alfabetización informacional</em> (pp. 13-31). Alfagrama.</li>
+          <li>Quevedo-Pacheco, N. (2014). <em>Alfabetización informacional: aspectos esenciales</em>. Consorcio de Universidades, Comité de Bibliotecas.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. RECURSOS -->
+    <section id="view-recursos" class="view-section">
+      <div class="subpage-header">
+        <img src="D E T O N A N T E_Banner (1).png" alt="Guía de Recursos">
+        <div class="subpage-content">
+          <span class="badge-tag">Catálogo Curado</span>
+          <h2>Guía de Recursos Electrónicos para la Mediación y el Aprendizaje</h2>
+          <p style="margin-top: 6px; font-size: 0.95rem; color: var(--muted);">
+            Herramientas digitales seleccionadas con su logotipo oficial, clasificadas para la investigación, la formación y la gestión pedagógica.
+          </p>
+        </div>
+      </div>
+
+      <div class="catalog-search-bar">
+        <input type="text" id="search-input" class="search-field" placeholder="Buscar herramienta por nombre o aplicación..." oninput="filterTools()">
+        <div class="tags-row">
+          <button class="tag-btn active" onclick="setCategory('todas', this)">Todos los recursos (29)</button>
+          <button class="tag-btn" onclick="setCategory('ia', this)">Inteligencia Artificial</button>
+          <button class="tag-btn" onclick="setCategory('formacion', this)">Investigación y Formación</button>
+          <button class="tag-btn" onclick="setCategory('gestion', this)">Gestión y Mediación Escolar</button>
+        </div>
+      </div>
+
+      <div class="resources-grid" id="tools-container"></div>
+    </section>
+
+    <!-- 4. APRENDIZAJE SIGNIFICATIVO -->
+    <section id="view-aprendizaje" class="view-section">
+      <div class="content-card">
+        <span class="badge-tag blue">Diagnóstico y Marco Normativo</span>
+        <h2>Los Usuarios de la Biblioteca Escolar: De la necesidad al derecho</h2>
+        <p style="margin-top: 10px; color: var(--muted); font-size: 0.95rem; line-height: 1.7;">
+          La gestión de la biblioteca escolar contemporánea exige comprender la diversidad de perfiles que convergen en el espacio escolar y las normativas que los respaldan. El marco legislativo y pedagógico define a los miembros de la comunidad educativa como <strong>sujetos plenos de derecho a la información, la cultura digital y la coproducción de conocimiento</strong>.
+        </p>
+      </div>
+
+      <div class="content-card">
+        <span class="badge-tag">Mapeo de Comunidad Escolar</span>
+        <h3 style="margin-bottom: 8px;">Tipologías de Usuarios y Necesidades Informativas</h3>
+        <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 22px;">
+          Clasificación y diagnóstico situacional fundamentado en las directrices de IFLA (2021), Monfasani & Curzel (2006), Gómez Hernández (2002) y Sanz Casado (1994).
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px;">
+          <div style="background: var(--bg); border: 1px solid var(--border); border-left: 4px solid var(--blue); padding: 18px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                <strong style="color: var(--blue); font-size: 1rem;">Equipo Directivo / Administradores</strong>
+                <span style="font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase;">Reales / Potenciales</span>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--text); line-height: 1.5; margin-top: 6px;">
+                Requieren información para decisiones de gestión, normativa actualizada y apoyo para integrar la biblioteca a los objetivos de la institución escolar.
+              </p>
+            </div>
+            <span style="font-size: 0.76rem; color: var(--muted); margin-top: 10px; display: block; font-style: italic;">Referencia: IFLA (2021)</span>
+          </div>
+
+          <div style="background: var(--bg); border: 1px solid var(--border); border-left: 4px solid var(--blue); padding: 18px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                <strong style="color: var(--blue); font-size: 1rem;">Docentes y Profesores</strong>
+                <span style="font-size: 0.72rem; font-weight: 700; color: var(--orange); text-transform: uppercase;">Usuarios Reales</span>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--text); line-height: 1.5; margin-top: 6px;">
+                Necesitan recursos pedagógicos, materiales actualizados y asesoramiento bibliográfico para planificar sus clases alineados con el currículo, integrar TIC y fomentar la lectura áulica.
+              </p>
+            </div>
+            <span style="font-size: 0.76rem; color: var(--muted); margin-top: 10px; display: block; font-style: italic;">Referencia: Monfasani & Curzel (2006)</span>
+          </div>
+
+          <div style="background: var(--bg); border: 1px solid var(--border); border-left: 4px solid var(--orange); padding: 18px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                <strong style="color: var(--orange); font-size: 1rem;">Estudiantes "Estudiosos"</strong>
+                <span style="font-size: 0.72rem; font-weight: 700; color: var(--orange); text-transform: uppercase;">Usuarios Reales</span>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--text); line-height: 1.5; margin-top: 6px;">
+                Demandan un espacio silencioso, conexión a red y fuentes de información confiables para resolver sus tareas con apoyo bibliotecario.
+              </p>
+            </div>
+            <span style="font-size: 0.76rem; color: var(--muted); margin-top: 10px; display: block; font-style: italic;">Referencia: Gómez Hernández (2002); Sanz Casado (1994)</span>
+          </div>
+
+          <div style="background: var(--bg); border: 1px solid var(--border); border-left: 4px solid var(--orange); padding: 18px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                <strong style="color: var(--orange); font-size: 1rem;">Estudiantes "Cibernéticos"</strong>
+                <span style="font-size: 0.72rem; font-weight: 700; color: var(--orange); text-transform: uppercase;">Usuarios Reales</span>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--text); line-height: 1.5; margin-top: 6px;">
+                Requieren Internet y ordenadores para experimentar creativamente, utilizar el correo y satisfacer demandas de información digital.
+              </p>
+            </div>
+            <span style="font-size: 0.76rem; color: var(--muted); margin-top: 10px; display: block; font-style: italic;">Referencia: Gómez Hernández (2002); Sanz Casado (1994)</span>
+          </div>
+
+          <div style="background: var(--bg); border: 1px solid var(--border); border-left: 4px solid var(--orange); padding: 18px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                <strong style="color: var(--orange); font-size: 1rem;">Estudiantes "Buscadores de Novedades"</strong>
+                <span style="font-size: 0.72rem; font-weight: 700; color: var(--orange); text-transform: uppercase;">Usuarios Reales</span>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--text); line-height: 1.5; margin-top: 6px;">
+                Requieren un servicio de préstamo ágil y colecciones literarias renovadas y atractivas para satisfacer su hábito de lectura libre.
+              </p>
+            </div>
+            <span style="font-size: 0.76rem; color: var(--muted); margin-top: 10px; display: block; font-style: italic;">Referencia: Gómez Hernández (2002); Sanz Casado (1994)</span>
+          </div>
+
+          <div style="background: var(--bg); border: 1px solid var(--border); border-left: 4px solid var(--blue); padding: 18px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                <strong style="color: var(--blue); font-size: 1rem;">Familias / Comunidad General</strong>
+                <span style="font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase;">Usuarios Potenciales</span>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--text); line-height: 1.5; margin-top: 6px;">
+                Necesitan espacios de participación, orientación sobre materiales de lectura y acceso a actividades de extensión cultural comunitaria.
+              </p>
+            </div>
+            <span style="font-size: 0.76rem; color: var(--muted); margin-top: 10px; display: block; font-style: italic;">Referencia: Sanz Casado (1994)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <span class="badge-tag blue">Cápsula Audiovisual</span>
+        <h3 style="margin-bottom: 8px;">¿Lectores o Sujetos de Derecho? De la norma a la acción</h3>
+        <p style="font-size: 0.92rem; color: var(--muted); line-height: 1.6; margin-bottom: 20px;">
+          Exposición sobre la articulación entre el marco normativo argentino y los derechos informativos y cívicos de los usuarios en la biblioteca escolar contemporánea.
+        </p>
+
+        <div style="border-radius: 12px; overflow: hidden; background: #000; box-shadow: 0 6px 20px rgba(0,0,0,0.12); border: 1px solid var(--border); line-height: 0;">
+          <video 
+            controls 
+            preload="metadata"
+            style="width: 100%; max-height: 520px; display: block; outline: none; background: #000;">
+            <source src="TP1-TGU- Marcia Goroz.mp4" type="video/mp4">
+            Tu navegador no soporta la reproducción directa de este video.
+          </video>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 24px;">
+          <div style="background: var(--bg); padding: 18px; border-radius: 8px; border: 1px solid var(--border);">
+            <strong style="color: var(--blue); font-size: 0.95rem; display: block; margin-bottom: 6px;">Ley N° 26.206 (Educación Nacional)</strong>
+            <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.5;">
+              Define a la educación como bien público y derecho social. En su Art. 91 consagra la obligación estatal de crear y fortalecer bibliotecas escolares y planes permanentes de promoción de lectura (Art. 11).
+            </p>
+          </div>
+          <div style="background: var(--bg); padding: 18px; border-radius: 8px; border: 1px solid var(--border);">
+            <strong style="color: var(--blue); font-size: 0.95rem; display: block; margin-bottom: 6px;">Ley N° 26.917 (Sistema Nacional)</strong>
+            <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.5;">
+              Establece en su Art. 4 la igualdad de oportunidades y el acceso no solo pasivo a la información, sino a la producción social del conocimiento, amparando al usuario como prosumidor.
+            </p>
+          </div>
+          <div style="background: var(--bg); padding: 18px; border-radius: 8px; border: 1px solid var(--border);">
+            <strong style="color: var(--orange); font-size: 0.95rem; display: block; margin-bottom: 6px;">Ley N° 12.599 (Santa Fe)</strong>
+            <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.5;">
+              En sus Arts. 3 y 8 sitúa a la biblioteca al servicio de toda la comunidad escolar e insta a coordinar proyectos culturales que trasciendan la escuela hacia el territorio barrial y regional.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. SITIOS RECOMENDADOS -->
+    <section id="view-sitios" class="view-section">
+      <div class="content-card">
+        <span class="badge-tag">Curaduría de Enlaces</span>
+        <h2>Sitios y Plataformas Recomendadas</h2>
+        <p style="margin-top: 10px; color: var(--muted); font-size: 0.95rem; line-height: 1.7;">
+          Un repertorio seleccionado de repositorios documentales, bibliotecas digitales de acceso libre y portales educativos públicos para profundizar la investigación, enriquecer la lectura literaria y respaldar la labor áulica.
+        </p>
+      </div>
+
+      <div class="content-card">
+        <span class="badge-tag blue">Fondos y Colecciones Digitales</span>
+        <h3 style="margin-bottom: 6px;">Bibliotecas Digitales y Patrimonio Documental</h3>
+        <p style="font-size: 0.88rem; color: var(--muted); margin-bottom: 20px;">
+          Acceso libre y gratuito a libros digitalizados, primeras ediciones, archivos de prensa histórica y literatura en dominio público.
+        </p>
+
+        <div class="resources-grid">
+          <div class="resource-card">
+            <div>
+              <div class="resource-header">
+                <div style="width:36px; height:36px; border-radius:8px; background:rgba(255,85,0,0.12); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                </div>
+                <span class="resource-title">Biblioteca Nacional Mariano Moreno</span>
+              </div>
+              <p style="font-size:0.88rem; color:var(--text); line-height:1.5;">
+                Principal reservorio de la memoria impresa argentina. Destacan sus colecciones digitales especiales, la Hemeroteca histórica y las exposiciones virtuales de literatura y pensamiento nacional.
+              </p>
+            </div>
+            <div style="padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
+              <a href="https://www.bn.gov.ar" target="_blank" rel="noopener noreferrer" class="resource-link">
+                Explorar colecciones digitales →
+              </a>
+            </div>
+          </div>
+
+          <div class="resource-card">
+            <div>
+              <div class="resource-header">
+                <div style="width:36px; height:36px; border-radius:8px; background:rgba(0,71,171,0.1); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                </div>
+                <span class="resource-title">Biblioteca Nacional de Maestras y Maestros</span>
+              </div>
+              <p style="font-size:0.88rem; color:var(--text); line-height:1.5;">
+                Portal digital con textos escolares históricos, libros de pedagogía clásica, normativas educativas y fondos digitalizados orientados a docentes e investigadores.
+              </p>
+            </div>
+            <div style="padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
+              <a href="http://www.bnm.me.gov.ar" target="_blank" rel="noopener noreferrer" class="resource-link">
+                Visitar catálogo y fondos →
+              </a>
+            </div>
+          </div>
+
+          <div class="resource-card">
+            <div>
+              <div class="resource-header">
+                <div style="width:36px; height:36px; border-radius:8px; background:rgba(0,71,171,0.1); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                </div>
+                <span class="resource-title">Biblioteca Virtual Miguel de Cervantes</span>
+              </div>
+              <p style="font-size:0.88rem; color:var(--text); line-height:1.5;">
+                Fondo de referencia mundial en lengua hispana. Contiene miles de obras digitalizadas completas, literatura juvenil, audiolibros, facsímiles e investigaciones críticas.
+              </p>
+            </div>
+            <div style="padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
+              <a href="https://www.cervantesvirtual.com" target="_blank" rel="noopener noreferrer" class="resource-link">
+                Consultar biblioteca abierta →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <span class="badge-tag">Mediación y Producción Escolar</span>
+        <h3 style="margin-bottom: 6px;">Portales Educativos y Contenidos Abiertos</h3>
+        <p style="font-size: 0.88rem; color: var(--muted); margin-bottom: 20px;">
+          Plataformas públicas con secuencias curriculares, banco audiovisual y materiales validados para el aula.
+        </p>
+
+        <div class="resources-grid">
+          <div class="resource-card">
+            <div>
+              <div class="resource-header">
+                <img src="https://cdn.simpleicons.org/googleclassroom/0047AB" class="resource-logo" alt="Logo Educ.ar" onerror="this.style.display='none';">
+                <span class="resource-title">Portal Educ.ar</span>
+              </div>
+              <p style="font-size:0.88rem; color:var(--text); line-height:1.5;">
+                El portal del Ministerio de Educación de la Nación con secuencias de enseñanza, recursos digitales por nivel y propuestas vinculadas a alfabetización informacional y digital.
+              </p>
+            </div>
+            <div style="padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
+              <a href="https://www.educ.ar" target="_blank" rel="noopener noreferrer" class="resource-link">
+                Acceder a secuencias didácticas →
+              </a>
+            </div>
+          </div>
+
+          <div class="resource-card">
+            <div>
+              <div class="resource-header">
+                <img src="https://cdn.simpleicons.org/youtube/FF5500" class="resource-logo" alt="Logo YouTube Encuentro">
+                <span class="resource-title">Canal Encuentro (Oficial)</span>
+              </div>
+              <p style="font-size:0.88rem; color:var(--text); line-height:1.5;">
+                Canal oficial con documentales, entrevistas a autoras y autores contemporáneos y series sobre historia, ciencia y literatura argentina para dinamizar encuentros en sala.
+              </p>
+            </div>
+            <div style="padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
+              <a href="https://www.youtube.com/@encuentro" target="_blank" rel="noopener noreferrer" class="resource-link">
+                Ver canal oficial en YouTube →
+              </a>
+            </div>
+          </div>
+
+          <div class="resource-card">
+            <div>
+              <div class="resource-header">
+                <div style="width:36px; height:36px; border-radius:8px; background:rgba(255,85,0,0.12); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                </div>
+                <span class="resource-title">Plan Nacional de Lecturas</span>
+              </div>
+              <p style="font-size:0.88rem; color:var(--text); line-height:1.5;">
+                Antologías de cuentos y poesías de distribución libre (colección Leer x Leer), guías de mediación para docentes y bibliotecarios, y sugerencias para itinerarios de lectura.
+              </p>
+            </div>
+            <div style="padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
+              <a href="https://www.educ.ar/recursos/150823/plan-nacional-de-lecturas" target="_blank" rel="noopener noreferrer" class="resource-link">
+                Descargar antologías y lecturas →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <span class="badge-tag blue">Territorio y Ciudadanía</span>
+        <h3 style="margin-bottom: 6px;">Memoria, Archivos y Redes Comunitarias</h3>
+        <p style="font-size: 0.88rem; color: var(--muted); margin-bottom: 20px;">
+          Iniciativas que conectan la biblioteca escolar con el entramado cultural comunitario y los derechos humanos.
+        </p>
+
+        <div class="resources-grid">
+          <div class="resource-card">
+            <div>
+              <div class="resource-header">
+                <div style="width:36px; height:36px; border-radius:8px; background:rgba(0,71,171,0.1); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
+                <span class="resource-title">CONABIP (Bibliotecas Populares)</span>
+              </div>
+              <p style="font-size:0.88rem; color:var(--text); line-height:1.5;">
+                Red federal de más de mil bibliotecas populares en toda la Argentina. Catálogo colectivo, proyectos de animación a la lectura y articulación comunitaria territorial.
+              </p>
+            </div>
+            <div style="padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
+              <a href="https://www.conabip.gob.ar" target="_blank" rel="noopener noreferrer" class="resource-link">
+                Conocer la red federal →
+              </a>
+            </div>
+          </div>
+
+          <div class="resource-card">
+            <div>
+              <div class="resource-header">
+                <div style="width:36px; height:36px; border-radius:8px; background:rgba(255,85,0,0.12); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                </div>
+                <span class="resource-title">Memoria Abierta</span>
+              </div>
+              <p style="font-size:0.88rem; color:var(--text); line-height:1.5;">
+                Patrimonio testimonial, fotográfico y documental sobre derechos humanos e historia reciente en Argentina. Insumo de primer nivel para proyectos de memoria en la escuela.
+              </p>
+            </div>
+            <div style="padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
+              <a href="https://memoriaabierta.org.ar" target="_blank" rel="noopener noreferrer" class="resource-link">
+                Explorar archivo testimonial →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. ARTÍCULOS ACADÉMICOS / PERIODÍSTICOS -->
+    <section id="view-articulos" class="view-section">
+      <!-- CABECERA DE LA SECCIÓN -->
+      <div class="content-card">
+        <span class="badge-tag blue">Dossier de Lecturas y Análisis Crítico</span>
+        <h2>Artículos Académicos y Periodísticos</h2>
+        <p style="margin-top: 10px; color: var(--muted); font-size: 0.95rem; line-height: 1.7;">
+          Ensayos periodísticos, marcos normativos e investigaciones arbitradas sobre inteligencia artificial generativa, posverdad y mediación ética desde la biblioteca escolar.
+        </p>
+      </div>
+
+      <!-- ARTÍCULO COMPLETO: MARCIA GOROZ -->
+      <article class="content-card" style="border-left: 5px solid var(--orange); padding: 32px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
+          <span class="badge-tag" style="background: rgba(255,85,0,0.15); color: var(--orange);">Artículo Periodístico | Producción Situada</span>
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--muted);">Año 2026</span>
+        </div>
+        
+        <h3 style="font-size: 1.6rem; line-height: 1.35; color: var(--text); margin-bottom: 8px;">
+          No la escondas, citala: La Inteligencia Artificial y el derecho a la multialfabetización desde la Biblioteca Escolar
+        </h3>
+        <p style="font-size: 0.95rem; color: var(--orange); font-weight: 700; margin-bottom: 22px;">
+          Por: Marcia Goroz<a href="#nota-autora" style="color: var(--blue); text-decoration: none; font-weight: 700; margin-left: 3px;" title="Ir a la nota sobre la autora"><sup>*</sup></a>
+        </p>
+
+        <!-- TEXTO TEXTUAL COMPLETO APROBADO POR LA CÁTEDRA -->
+        <div style="font-size: 0.95rem; color: var(--text); line-height: 1.8; display: flex; flex-direction: column; gap: 16px;">
+          <p>
+            Es un secreto a voces que recorre los pasillos de cualquier escuela secundaria: frente a la hoja en blanco, las y los alumnos abren una pestaña, ingresan una instrucción y, en cuestión de segundos, una Inteligencia Artificial (IA) les devuelve un trabajo completo. El instinto inmediato del sistema educativo tradicional suele ser la prohibición o la búsqueda de "detectores de plagio". Sin embargo, desde la Biblioteca Escolar es necesario plantearnos un enfoque radicalmente distinto: ¿Y si en lugar de obligar a las juventudes a esconder a la IA, asumimos el compromiso social de enseñarles a discernir qué es, cómo funciona y cómo citarla?
+          </p>
+
+          <p>
+            Abordar este "elefante en el aula" implica comprender que nos enfrentamos a un cambio de paradigma insoslayable. Hemos pasado de tener un alumnado que era meramente consumidor pasivo a jóvenes que actúan como "prodiseñadores", es decir, usuarios que consumen, elaboran y comparten información simultáneamente en el entorno digital (Hernández-Serrano et al., 2017).
+          </p>
+
+          <h4 style="color: var(--blue); font-size: 1.15rem; margin-top: 10px;">La multialfabetización como derecho y la verdadera accesibilidad</h4>
+
+          <p>
+            Para dar respuesta a este escenario, el rol del bibliotecario debe centrarse en garantizar la multialfabetización como un derecho humano básico. Como bien señala Velázquez (2015), en nuestra sociedad ya no basta con saber leer y escribir un texto impreso; el desempeño pleno de la ciudadanía nos exige que las y los estudiantes desarrollen la capacidad de buscar, discriminar críticamente y producir información en todos los soportes y lenguajes que hoy convergen.
+          </p>
+
+          <p>
+            Aquí es donde la accesibilidad cobra un valor diferente: la biblioteca escolar, como entorno democrático, debe garantizar la igualdad de oportunidades (IFLA, 2015). Reducir la brecha digital ya no significa únicamente proveer una computadora con conexión a internet; significa democratizar el "saber hacer". Consiste en asegurar que las y los estudiantes puedan decodificar los múltiples lenguajes de la información frente a la actual sobreabundancia de datos.
+          </p>
+
+          <h4 style="color: var(--blue); font-size: 1.15rem; margin-top: 10px;">La IA no es magia, son datos (y los datos tienen sesgos)</h4>
+
+          <p>
+            Es en este contexto donde la Inteligencia Artificial y la multialfabetización colisionan. Con el avance de la IA, la Alfabetización Informacional (ALFIN) adquiere una dimensión muchísimo más compleja, obligándonos a enseñar cómo interactuar de manera ética y segura con estos sistemas.
+          </p>
+
+          <p>
+            Nuestro compromiso social es derribar el mito de que la IA es un ente sabelotodo y objetivo. Las juventudes deben discernir que un chatbot no "piensa", sino que se alimenta de volúmenes masivos de datos creados por humanos. Y esos datos están atravesados por sesgos ideológicos, culturales y de género. Si las y los estudiantes no comprenden esto, corren el riesgo de consumir y reproducir información engañosa en una era de infodemia y posverdad, donde las emociones muchas veces tienen más influencia que los hechos objetivos (Cortes Vera, 2019).
+          </p>
+
+          <p>
+            Si, por parte de quienes deben acompañar su formación, se niega el uso, se disciplina y se sanciona, corremos el inmenso riesgo de que todos esos sesgos los atraviesen en soledad, poniendo en peligro su desarrollo y su próxima inserción en la sociedad, impidiéndoles desenvolverse con éxito en el mundo contemporáneo. Es verdad que la biblioteca debe adecuarse a la normativa institucional, pero no debemos olvidar que también es un espacio de contención social; de hecho, constituye "un servicio de asistencia social en el sentido fuerte del término" (Gómez Hernández, 2002). Como tal, ¿qué mejor lugar que este para que estas juventudes no se sientan solas en este camino y puedan investigar o preguntar sin ser juzgadas? Los organismos internacionales respaldan esta visión al definir a la biblioteca escolar como ese "espacio seguro donde se fomenta y apoya la curiosidad" y donde las y los jóvenes pueden "explorar diversos temas, incluso temas controvertidos, en privacidad y seguridad" (IFLA, 2015).
+          </p>
+
+          <p>
+            Por ello, el desafío del bibliotecario y la bibliotecaria escolar es transformar la biblioteca en un laboratorio de pensamiento crítico. Nuestra labor es enseñarles a interrogar a la máquina. Si utilizan una IA para estructurar su investigación, nuestro consejo debe ser: <strong>"Verificá en fuentes confiables los datos que te arrojó, evaluá sus sesgos y aprendé a citarla en tu bibliografía"</strong>.
+          </p>
+
+          <p>
+            Reconocer el uso de la Inteligencia Artificial y referenciarla es el acto supremo de honestidad intelectual en el siglo XXI. De hecho, si querés aprender cómo referenciar correctamente estos textos en tus trabajos, podés consultar la <a href="https://biblioguias.ucm.es/estilo-apa-septima/citar_inteligencia_artificial" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" style="color: var(--orange); font-weight: 700; text-decoration: underline;">guía sobre cómo citar Inteligencia Artificial adaptada al castellano por la Universidad Complutense de Madrid</a>, basada en la 7ª edición de las Normas APA.
+          </p>
+
+          <p>
+            La biblioteca escolar moderna no es el templo del silencio y el papel, sino el corazón dinámico de la escuela. No podemos frenar el avance de la IA, pero es nuestro deber ético garantizar el derecho a la multialfabetización, empoderando a las juventudes para que utilicen estas herramientas con responsabilidad, contención y un inquebrantable espíritu crítico.
+          </p>
+        </div>
+
+        <!-- NOTA AL PIE VINCULADA: AUTORÍA -->
+        <div id="nota-autora" style="margin-top: 24px; padding: 16px; background: #FFFDF0; border-radius: 8px; border: 1px solid #E8E2C8; border-left: 4px solid var(--blue); font-size: 0.88rem; line-height: 1.6; color: var(--text);">
+          <strong style="color: var(--blue); display: block; margin-bottom: 4px;">* Sobre la autora:</strong>
+          Soy Marcia Goroz, estudiante de la carrera de Bibliotecario Escolar en el Departamento de Ciencia de la Información de la Universidad Nacional de Mar del Plata (UNMDP). Como futura profesional, mi vocación se centra en acompañar a los estudiantes en su desarrollo informacional y potenciar el valor pedagógico de las unidades de información. Disfruto investigando sobre el impacto de las nuevas tecnologías en la educación y trabajo con el anhelo de construir espacios de lectura cada vez más participativos, democráticos y humanos.
+        </div>
+
+        <!-- POST-IT INTERACTIVO: CITA APA 7 RIGUROSA PARA TRABAJO DE CÁTEDRA -->
+        <div class="postit-note orange" style="margin-top: 20px;">
+          <div class="postit-header">
+            <span class="postit-title" style="color: var(--orange);">
+              📌 ¿Querés usar este artículo en tu investigación? Citalo en APA 7:
+            </span>
+            <button class="copy-citation-btn" onclick="copyCitation('cite-marcia', this)">Copiar cita APA 7</button>
+          </div>
+          <p class="postit-text" id="cite-marcia">Goroz, M. (2026). <em>No la escondas, citala: La Inteligencia Artificial y el derecho a la multialfabetización desde la Biblioteca Escolar</em> [Trabajo de cátedra no publicado]. Departamento de Ciencia de la Información, Facultad de Humanidades, Universidad Nacional de Mar del Plata.</p>
+        </div>
+
+        <!-- BIBLIOGRAFÍA DEL ARTÍCULO (APA 7) -->
+        <div style="margin-top: 24px; padding: 18px; background: var(--bg); border-radius: 8px; border: 1px solid var(--border);">
+          <strong style="color: var(--blue); font-size: 0.88rem; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+            Bibliografía:
+          </strong>
+          <ul style="padding-left: 20px; font-size: 0.84rem; color: var(--muted); line-height: 1.8;">
+            <li>Acosta Aguilar, C. (2016). <em>¿Cómo escribir un buen artículo periodístico?</em> Entreperiodistas: periodismo y comunicación. http://www.entreperiodistas.com/escribir-buen-articulo-periodistico/</li>
+            <li>Cortes Vera, J. D. J. (2019). <em>La alfabetización informacional, bastión en tiempos de la posverdad</em>. Instituto de Ciencias Sociales y Administración. http://cathi.uacj.mx/handle/20.500.11961/10888</li>
+            <li>Federación Internacional de Asociaciones de Bibliotecarios y Bibliotecas [IFLA]. (2015). <em>Directrices de la IFLA para la Biblioteca Escolar</em> (2.ª ed. revisada). https://www.ifla.org/files/assets/school-libraries-resource-centers/publications/ifla-school-library-guidelines.pdf</li>
+            <li>Gómez Hernández, J. A. (2002). <em>Gestión de bibliotecas</em>. Universidad de Murcia.</li>
+            <li>Hernández-Serrano, M. J., Renés-Arellano, P., Graham, G., & Greenhill, A. (2017). Del prosumidor al prodiseñador: el consumo participativo de noticias. <em>Comunicar: Revista Científica de Educomunicación</em>, 25(50), 77-88. https://doi.org/10.3916/C50-2017-07</li>
+            <li>Sancho, M. V. (s.f.). <em>Alfabetización informacional en los tiempos de "posverdad" en las bibliotecas escolares</em> [Documento de cátedra].</li>
+            <li>Velázquez, E. (2015). <em>Alfabetizaciones múltiples ¿para qué?</em> Infotecarios. http://www.infotecarios.com/alfabetizaciones-multiples-para-que/</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- ARTÍCULOS ACADÉMICOS COMPLEMENTARIOS VERIFICADOS -->
+      <div class="content-card">
+        <span class="badge-tag">Investigación Académica Arbitrada</span>
+        <h3 style="margin-bottom: 8px;">Estudios Científicos y Documentos Normativos de Consulta Abierta</h3>
+        <p style="font-size: 0.88rem; color: var(--muted); margin-bottom: 20px;">
+          Publicaciones científicas con referato y directrices internacionales que sustentan el marco teórico sobre prodiseño, posverdad y mediación bibliotecaria.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          
+          <!-- ESTUDIO 1: HERNÁNDEZ-SERRANO ET AL. (REVISTA COMUNICAR) -->
+          <div style="background: var(--bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
+              <h4 style="color: var(--blue); font-size: 1.05rem;">
+                Del prosumidor al prodiseñador: el consumo participativo de noticias
+              </h4>
+              <span style="font-size: 0.74rem; font-weight: 700; color: var(--orange); background: #FFF; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border);">Revista Comunicar (Q1)</span>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text); line-height: 1.6; margin-bottom: 12px;">
+              Investigación empírica que conceptualiza la evolución desde el prosumidor hacia el "prodiseñador": un usuario que no se limita a consumir y compartir, sino que elabora, rediseña y produce sentido activo en las plataformas digitales.
+            </p>
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+              <a href="https://doi.org/10.3916/C50-2017-07" target="_blank" rel="noopener noreferrer" class="resource-link">
+                Acceder al artículo oficial (Revista Comunicar con DOI) →
+              </a>
+            </div>
+
+            <!-- POST-IT CITA 1 -->
+            <div class="postit-note">
+              <div class="postit-header">
+                <span class="postit-title" style="color: #6B6000;">
+                  📌 Cita este estudio en formato APA 7:
+                </span>
+                <button class="copy-citation-btn" onclick="copyCitation('cite-comunicar', this)">Copiar cita APA 7</button>
+              </div>
+              <p class="postit-text" id="cite-comunicar">Hernández-Serrano, M. J., Renés-Arellano, P., Graham, G., & Greenhill, A. (2017). Del prosumidor al prodiseñador: el consumo participativo de noticias. <em>Comunicar: Revista Científica de Educomunicación</em>, 25(50), 77-88. https://doi.org/10.3916/C50-2017-07</p>
+            </div>
+          </div>
+
+          <!-- ESTUDIO 2: CORTÉS VERA (DIALNET / CATHI) -->
+          <div style="background: var(--bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
+              <h4 style="color: var(--blue); font-size: 1.05rem;">
+                La alfabetización informacional, bastión en tiempos de la posverdad
+              </h4>
+              <span style="font-size: 0.74rem; font-weight: 700; color: var(--blue); background: #FFF; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border);">Repositorio Institucional CATHI</span>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text); line-height: 1.6; margin-bottom: 12px;">
+              Ensayo de referencia sobre la función de la alfabetización informacional frente a la desinformación masiva, enfatizando el desarrollo del juicio crítico para contrastar fuentes y evitar la manipulación ideológica.
+            </p>
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+              <a href="http://cathi.uacj.mx/handle/20.500.11961/10888" target="_blank" rel="noopener noreferrer" class="resource-link">
+                Consultar registro y texto completo en CATHI →
+              </a>
+            </div>
+
+            <!-- POST-IT CITA 2 -->
+            <div class="postit-note blue">
+              <div class="postit-header">
+                <span class="postit-title" style="color: var(--blue);">
+                  📌 Cita este trabajo en formato APA 7:
+                </span>
+                <button class="copy-citation-btn" onclick="copyCitation('cite-cortes', this)">Copiar cita APA 7</button>
+              </div>
+              <p class="postit-text" id="cite-cortes">Cortes Vera, J. D. J. (2019). <em>La alfabetización informacional, bastión en tiempos de la posverdad</em>. Instituto de Ciencias Sociales y Administración. http://cathi.uacj.mx/handle/20.500.11961/10888</p>
+            </div>
+          </div>
+
+          <!-- ESTUDIO 3: DIRECTRICES IFLA PARA LA BIBLIOTECA ESCOLAR -->
+          <div style="background: var(--bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
+              <h4 style="color: var(--blue); font-size: 1.05rem;">
+                Directrices de la IFLA para la Biblioteca Escolar
+              </h4>
+              <span style="font-size: 0.74rem; font-weight: 700; color: var(--orange); background: #FFF; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border);">IFLA / UNESCO</span>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text); line-height: 1.6; margin-bottom: 12px;">
+              Directrices internacionales que definen a la biblioteca escolar como un entorno inclusivo y seguro, esencial para garantizar el acceso equitativo a los recursos y promover la alfabetización informacional y mediática.
+            </p>
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+              <a href="https://repository.ifla.org/handle/123456789/1096" target="_blank" rel="noopener noreferrer" class="resource-link">
+                Descargar documento oficial en IFLA Repository →
+              </a>
+            </div>
+
+            <!-- POST-IT CITA 3 -->
+            <div class="postit-note">
+              <div class="postit-header">
+                <span class="postit-title" style="color: #6B6000;">
+                  📌 Cita este documento normativo en formato APA 7:
+                </span>
+                <button class="copy-citation-btn" onclick="copyCitation('cite-ifla', this)">Copiar cita APA 7</button>
+              </div>
+              <p class="postit-text" id="cite-ifla">Federación Internacional de Asociaciones de Bibliotecarios y Bibliotecas. (2015). <em>Directrices de la IFLA para la Biblioteca Escolar</em> (2.ª ed. revisada). https://repository.ifla.org/handle/123456789/1096</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. NOS PREGUNTAMOS -->
+    <section id="view-nos-preguntamos" class="view-section">
+      <!-- CABECERA EDITORIAL -->
+      <div class="content-card">
+        <span class="badge-tag">Diagnóstico de Comunidad Escolar</span>
+        <h2>Nos Preguntamos: Hábitos, Pantallas y Demandas Lectoras</h2>
+        <p style="margin-top: 10px; color: var(--muted); font-size: 0.95rem; line-height: 1.7;">
+          Bajo la premisa metodológica de que no se pueden gestionar servicios pertinentes sin conocer a la comunidad real, este espacio reúne el instrumento de diagnóstico situacional para relevar prácticas de estudio, consumos mediáticos y necesidades informacionales en la escuela secundaria.
+        </p>
+      </div>
+
+      <!-- FUNDAMENTACIÓN METODOLÓGICA -->
+      <div class="content-card" style="border-left: 5px solid var(--blue);">
+        <span class="badge-tag blue">Marco Metodológico</span>
+        <h3 style="margin-bottom: 12px;">El Estudio de Usuarios como Herramienta de Gestión Democrática</h3>
+        <p style="font-size: 0.93rem; color: var(--text); line-height: 1.7; margin-bottom: 14px;">
+          Siguiendo los lineamientos de <strong>Sanz Casado (1994)</strong> y las directrices de la <strong>IFLA (2015)</strong>, el estudio de usuarios constituye una herramienta científica indispensable para superar la intuición y fundamentar la toma de decisiones bibliotecarias en evidencias concretas. La biblioteca escolar contemporánea asume a sus lectores como sujetos plenos de derecho; por ende, indagar sus hábitos no busca disciplinar sus consumos, sino generar un andamiaje pedagógico situado que responda a sus realidades cotidianas.
+        </p>
+        <p style="font-size: 0.93rem; color: var(--text); line-height: 1.7;">
+          En tiempos de convergencia digital e infodemia, resulta urgente comprender cómo las juventudes interactúan con los algoritmos, qué lugar ocupa la lectura literaria frente al consumo de microcontenidos y cuáles son los obstáculos reales que experimentan al momento de realizar trabajos de investigación escolar.
+        </p>
+      </div>
+
+      <!-- DIMENSIONES DEL INSTRUMENTO -->
+      <div class="content-card">
+        <span class="badge-tag">Dimensiones del Relevamiento</span>
+        <h3 style="margin-bottom: 8px;">¿Qué exploramos en nuestra comunidad educativa?</h3>
+        <p style="font-size: 0.88rem; color: var(--muted); margin-bottom: 22px;">
+          Cuatro ejes analíticos diseñados para trazar el perfil de la comunidad escolar:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px;">
+          <div style="background: var(--bg); padding: 18px; border-radius: 8px; border: 1px solid var(--border); border-top: 3px solid var(--orange);">
+            <strong style="color: var(--orange); font-size: 0.95rem; display: block; margin-bottom: 6px;">1. Ecología de Pantallas y Soportes</strong>
+            <p style="font-size: 0.86rem; color: var(--muted); line-height: 1.5;">
+              Frecuencia y preferencia entre lectura en libro físico, teléfonos móviles y computadoras portátiles para el estudio y el esparcimiento personal.
+            </p>
+          </div>
+
+          <div style="background: var(--bg); padding: 18px; border-radius: 8px; border: 1px solid var(--border); border-top: 3px solid var(--blue);">
+            <strong style="color: var(--blue); font-size: 0.95rem; display: block; margin-bottom: 6px;">2. Búsqueda y Validación Informativa</strong>
+            <p style="font-size: 0.86rem; color: var(--muted); line-height: 1.5;">
+              Estrategias que aplican al buscar fuentes académicas: motores tradicionales, redes sociales, criterios para detectar noticias falsas y plagio.
+            </p>
+          </div>
+
+          <div style="background: var(--bg); padding: 18px; border-radius: 8px; border: 1px solid var(--border); border-top: 3px solid var(--orange);">
+            <strong style="color: var(--orange); font-size: 0.95rem; display: block; margin-bottom: 6px;">3. Apropiación de Inteligencia Artificial</strong>
+            <p style="font-size: 0.86rem; color: var(--muted); line-height: 1.5;">
+              Uso efectivo de herramientas generativas (ChatGPT, Copilot, Canva) para redactar tareas, generar ideas o resolver dudas escolares.
+            </p>
+          </div>
+
+          <div style="background: var(--bg); padding: 18px; border-radius: 8px; border: 1px solid var(--border); border-top: 3px solid var(--blue);">
+            <strong style="color: var(--blue); font-size: 0.95rem; display: block; margin-bottom: 6px;">4. Demandas hacia la Biblioteca</strong>
+            <p style="font-size: 0.86rem; color: var(--muted); line-height: 1.5;">
+              Expectativas en torno a colecciones juveniles, conectividad, horarios, préstamos a domicilio y talleres de producción multimedia.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACCESO DIRECTO AL INSTRUMENTO / ENCUESTA -->
+      <div class="content-card" style="background: linear-gradient(135deg, #FFFFFF 0%, #FFFDF9 100%); border: 2px solid var(--orange); text-align: center; padding: 36px 20px;">
+        <span class="badge-tag" style="background: var(--orange); color: #FFF;">Instrumento de Recolección de Datos</span>
+        <h3 style="font-size: 1.45rem; color: var(--text); margin-top: 8px; margin-bottom: 10px;">
+          Encuesta de Diagnóstico de Usuarios y Culturas Digitales
+        </h3>
+        <p style="font-size: 0.92rem; color: var(--muted); max-width: 680px; margin: 0 auto 24px; line-height: 1.6;">
+          Este cuestionario estructurado es de carácter anónimo y confidencial. Sus resultados se procesan con fines exclusivamente pedagógicos y de mejora continua en la gestión de nuestros fondos y servicios.
+        </p>
+
+        <a href="https://bit.ly/EncuestaBiblioEscolar" target="_blank" rel="noopener noreferrer" style="background: var(--orange); color: #FFFFFF; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(255,85,0,0.25); transition: transform 0.2s;">
+          <span>Completar la encuesta en línea</span>
+          <span>→</span>
+        </a>
+
+        <span style="display: block; font-size: 0.78rem; color: var(--muted); margin-top: 14px;">
+          Tiempo estimado: 4 a 6 minutos | Destinado a estudiantes y docentes de nivel secundario
+        </span>
+      </div>
+
+      <!-- NOTA DE RESPALDO BIBLIOGRÁFICO -->
+      <div class="content-card" style="padding: 20px;">
+        <strong style="color: var(--blue); font-size: 0.85rem; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+          Sustento Teórico del Relevamiento (APA 7):
+        </strong>
+        <p style="font-size: 0.84rem; color: var(--muted); line-height: 1.6;">
+          Sanz Casado, E. (1994). <em>Manual de estudios de usuarios</em>. Fundación Germán Sánchez Ruipérez.<br>
+          Federación Internacional de Asociaciones de Bibliotecarios y Bibliotecas. (2015). <em>Directrices de la IFLA para la Biblioteca Escolar</em> (2.ª ed. revisada). IFLA.
+        </p>
+      </div>
+    </section>
+
+<!-- 8. PÓSTER -->
+    <section id="view-poster" class="view-section">
+      <div class="subpage-header">
+        <img src="D E T O N A N T E_Banner (2).png" alt="Cabecera Póster">
+        <div class="subpage-content">
+          <span class="badge-tag">Infografía Pedagógica</span>
+          <h2>Educación en Inteligencia Artificial desde la Biblioteca Escolar</h2>
+          <p style="margin-top: 6px; font-size: 0.95rem; color: var(--muted);">
+            Cuatro dimensiones formativas para interrogar la tecnología generativa, evaluar sesgos algorítmicos y promover la ciudadanía digital situada.
+          </p>
+        </div>
+      </div>
+
+      <div class="content-card" style="border-left: 5px solid var(--orange);">
+        <h3 style="color: var(--orange); font-size: 1.2rem; margin-bottom: 8px;">Itinerario de Mediación Crítica</h3>
+        <p style="font-size: 0.92rem; color: var(--text); line-height: 1.6;">
+          La incorporación de la inteligencia artificial en el aula requiere una mirada pedagógica que desplace la fascinación instrumental y recupere el pensamiento crítico. La biblioteca escolar actúa como espacio de andamiaje para transitar desde el consumo pasivo hacia la autoría responsable.
+        </p>
+      </div>
+
+      <!-- CUATRO EJES INFOGRÁFICOS SOBRIOS -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-bottom: 24px;">
+        <div style="background: var(--card-bg); border-left: 4px solid var(--blue); padding: 20px; border-radius: 8px; border: 1px solid var(--border); border-left-width: 4px;">
+          <span style="font-size: 0.76rem; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Dimensión 1</span>
+          <h4 style="color: var(--text); margin-bottom: 8px; font-size: 1.05rem;">Desmitificar el Sistema</h4>
+          <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.6;">
+            La IA generativa carece de conciencia y comprensión semántica: opera prediciendo secuencias lingüísticas e iconográficas a partir de modelos probabilísticos calculados sobre grandes corpus masivos.
+          </p>
+        </div>
+
+        <div style="background: var(--card-bg); border-left: 4px solid var(--orange); padding: 20px; border-radius: 8px; border: 1px solid var(--border); border-left-width: 4px;">
+          <span style="font-size: 0.76rem; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Dimensión 2</span>
+          <h4 style="color: var(--text); margin-bottom: 8px; font-size: 1.05rem;">Auditar Sesgos y Representaciones</h4>
+          <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.6;">
+            Los datos de entrenamiento reproducen inequidades históricas y cánones normativos. Identificar estereotipos corporales, étnicos y de género en los resultados visuales constituye un ejercicio de ciudadanía activa.
+          </p>
+        </div>
+
+        <div style="background: var(--card-bg); border-left: 4px solid var(--blue); padding: 20px; border-radius: 8px; border: 1px solid var(--border); border-left-width: 4px;">
+          <span style="font-size: 0.76rem; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Dimensión 3</span>
+          <h4 style="color: var(--text); margin-bottom: 8px; font-size: 1.05rem;">Citar, Transparentar y Validar</h4>
+          <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.6;">
+            El uso ético exige superar la sanción o el ocultamiento: declarar la plataforma, archivar la instrucción o prompt y contrastar rigurosamente los datos generados contra fuentes bibliográficas confiables.
+          </p>
+        </div>
+
+        <div style="background: var(--card-bg); border-left: 4px solid var(--orange); padding: 20px; border-radius: 8px; border: 1px solid var(--border); border-left-width: 4px;">
+          <span style="font-size: 0.76rem; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Dimensión 4</span>
+          <h4 style="color: var(--text); margin-bottom: 8px; font-size: 1.05rem;">Prodiseño y Sentido Comunitario</h4>
+          <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.6;">
+            Habilitar el tránsito desde el consumo pasivo hacia la figura del prodiseñador: apropiarse de los medios digitales para resignificar el fondo bibliográfico y crear narrativas colectivas situadas.
+          </p>
+        </div>
+      </div>
+
+      <!-- ORIENTACIONES CRÍTICAS (SOBRIAS) -->
+      <div class="content-card">
+        <span class="badge-tag blue">Criterios de Intervención</span>
+        <h3 style="margin-bottom: 14px;">Pautas para el Trabajo en Sala y Aula</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+          <div style="background: var(--bg); border-left: 4px solid #A83232; padding: 18px; border-radius: 6px; border: 1px solid var(--border); border-left-width: 4px;">
+            <strong style="color: #A83232; display: block; margin-bottom: 6px;">Prácticas a Desarticular:</strong>
+            <p style="font-size: 0.86rem; color: var(--muted); line-height: 1.6;">
+              La delegación acrítica de la escritura, la reproducción de alucinaciones informativas sin contrastación y el disciplinamiento punitivo que empuja al estudiante al uso clandestino de la tecnología.
+            </p>
+          </div>
+          <div style="background: var(--bg); border-left: 4px solid #9C7A14; padding: 18px; border-radius: 6px; border: 1px solid var(--border); border-left-width: 4px;">
+            <strong style="color: #9C7A14; display: block; margin-bottom: 6px;">Prácticas de Auditoría:</strong>
+            <p style="font-size: 0.86rem; color: var(--muted); line-height: 1.6;">
+              El análisis crítico del canon visual devuelto por los algoritmos, la reformulación de instrucciones para reflejar realidades locales y la evaluación contextualizada de los contenidos.
+            </p>
+          </div>
+          <div style="background: var(--bg); border-left: 4px solid #286A3E; padding: 18px; border-radius: 6px; border: 1px solid var(--border); border-left-width: 4px;">
+            <strong style="color: #286A3E; display: block; margin-bottom: 6px;">Prácticas Emancipadoras:</strong>
+            <p style="font-size: 0.86rem; color: var(--muted); line-height: 1.6;">
+              La exploración heurística, el uso de asistentes para estructurar esquemas preliminares de trabajo y el reconocimiento formal de la herramienta mediante normas de citación académica.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. ACCESIBILIDAD DESDE LA BIBLIOTECA ESCOLAR -->
+    <section id="view-accesibilidad" class="view-section">
+      <div class="content-card">
+        <span class="badge-tag blue">Justicia Social y Democratización</span>
+        <h2>Accesibilidad e Inclusión Real en la Biblioteca Escolar</h2>
+        <p style="margin-top: 10px; color: var(--muted); font-size: 0.95rem; line-height: 1.8;">
+          En consonancia con las Directrices IFLA/UNESCO y el marco de la Ley de Educación Nacional N° 26.206, la accesibilidad en la biblioteca escolar trasciende la supresión de barreras arquitectónicas: constituye un <strong>principio de justicia informacional y pedagógica</strong>. Concebir a las y los estudiantes como sujetos plenos de derecho exige diversificar los soportes, adaptar los lenguajes y garantizar que ninguna trayectoria de aprendizaje quede excluida del acceso a la cultura letrada y digital.
+        </p>
+      </div>
+
+      <!-- EJES PROFUNDOS DE ACCESIBILIDAD -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 24px;">
+        
+        <!-- EJE 1: LECTURA FÁCIL -->
+        <div class="content-card" style="margin-bottom: 0; border-top: 4px solid var(--orange);">
+          <span class="badge-tag">Accesibilidad Cognitiva</span>
+          <h3 style="font-size: 1.15rem; color: var(--text); margin-bottom: 8px;">Lectura Fácil y Textos Adaptados</h3>
+          <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 12px;">
+            La adaptación de textos bajo directrices de Lectura Fácil no simplifica el pensamiento: democratiza la comprensión. Está destinada a estudiantes con dificultades específicas del aprendizaje, personas en procesos de alfabetización inicial o hablantes de segundas lenguas.
+          </p>
+          <ul style="padding-left: 18px; font-size: 0.84rem; color: var(--text); line-height: 1.6;">
+            <li>Sintaxis directa (sujeto, verbo, predicado) evitando construcciones pasivas.</li>
+            <li>Tipografías sans-serif de alta legibilidad con interlineado holgado.</li>
+            <li>Glosarios situados en margen para términos polisémicos o metafóricos.</li>
+          </ul>
+        </div>
+
+        <!-- EJE 2: ACCESIBILIDAD DIGITAL Y WEB -->
+        <div class="content-card" style="margin-bottom: 0; border-top: 4px solid var(--blue);">
+          <span class="badge-tag blue">Entornos Digitales Accesibles</span>
+          <h3 style="font-size: 1.15rem; color: var(--text); margin-bottom: 8px;">Pautas WCAG 2.1 y Lectura Asistida</h3>
+          <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 12px;">
+            Garantizar que los repositorios, catálogos en línea (OPAC) y plataformas virtuales de la biblioteca cumplan estándares internacionales de accesibilidad web (W3C/WCAG) para usuarios con diversidad visual o motriz.
+          </p>
+          <ul style="padding-left: 18px; font-size: 0.84rem; color: var(--text); line-height: 1.6;">
+            <li>Estructura semántica rigurosa (h1, h2, h3) compatible con lectores de pantalla (NVDA, JAWS).</li>
+            <li>Textos alternativos descriptivos en todos los recursos visuales y gráficos.</li>
+            <li>Contraste cromático certificado y navegabilidad plena mediante teclado.</li>
+          </ul>
+        </div>
+
+        <!-- EJE 3: MULTIMODALIDAD Y FORMATOS AUMENTATIVOS -->
+        <div class="content-card" style="margin-bottom: 0; border-top: 4px solid var(--blue);">
+          <span class="badge-tag blue">Diversidad de Soportes</span>
+          <h3 style="font-size: 1.15rem; color: var(--text); margin-bottom: 8px;">Fondos Multimodales y Comunicación Aumentativa</h3>
+          <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 12px;">
+            Superar el monopolio del libro impreso tradicional mediante la incorporación sistemática de fondos enriquecidos que habiliten múltiples canales sensoriales de acceso a la ficción y al conocimiento escolar.
+          </p>
+          <ul style="padding-left: 18px; font-size: 0.84rem; color: var(--text); line-height: 1.6;">
+            <li>Audiolibros narrados y materiales sonoros para mediación en sala.</li>
+            <li>Incorporación de Sistemas Aumentativos y Alternativos de Comunicación (SAAC / pictogramas).</li>
+            <li>Señalética accesible y libros con tipografías macro-tipo para baja visión.</li>
+          </ul>
+        </div>
+
+        <!-- EJE 4: MEDIACIÓN PEDAGÓGICA SITUADA (CENTRADA Y BALANCEADA) -->
+        <div class="content-card" style="margin-bottom: 0; border-top: 4px solid var(--orange); grid-column: 1 / -1; max-width: 820px; margin-left: auto; margin-right: auto; width: 100%;">
+          <div style="text-align: center; margin-bottom: 10px;">
+            <span class="badge-tag" style="margin-bottom: 6px;">Rol Bibliotecario</span>
+            <h3 style="font-size: 1.25rem; color: var(--text); margin-bottom: 8px;">La Mediación como Andamiaje Inclusivo</h3>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-bottom: 16px; text-align: center;">
+            El recurso técnico no garantiza inclusión por sí mismo si no media un profesional de la información formado con sensibilidad pedagógica, capaz de articular con docentes integradores y equipos interdisciplinarios.
+          </p>
+          <ul style="padding-left: 20px; font-size: 0.86rem; color: var(--text); line-height: 1.7; max-width: 650px; margin: 0 auto;">
+            <li>Selección situada de obras según las necesidades de la trayectoria particular.</li>
+            <li>Curaduría de herramientas digitales con diseño universal para el aprendizaje (DUA).</li>
+            <li>Construcción de la sala de lectura como un espacio seguro y libre de estigmatización.</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- NOTA DE CIERRE NORMATIVA -->
+      <div class="content-card" style="background: var(--bg); padding: 22px;">
+        <strong style="color: var(--blue); font-size: 0.88rem; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+          Marco Institucional y Normativo de Respaldo:
+        </strong>
+        <p style="font-size: 0.86rem; color: var(--muted); line-height: 1.6;">
+          Convención sobre los Derechos de las Personas con Discapacidad (Ley N° 26.378) • Ley de Educación Nacional N° 26.206 (Capítulo II: Educación Especial) • Directrices IFLA/UNESCO para el Desarrollo del Servicio de Bibliotecas Escolares • Pautas de Accesibilidad para el Contenido Web (WCAG 2.1 - W3C).
+        </p>
+      </div>
+    </section>
+
+    <!-- 10. INNOVACIÓN EN LA BIBLIOTECA ESCOLAR -->
+    <section id="view-innovacion" class="view-section">
+      <!-- CABECERA DE LA SECCIÓN -->
+      <div class="content-card">
+        <span class="badge-tag">Laboratorio y Territorio</span>
+        <h2>Innovación y Nuevas Ecologías de Aprendizaje</h2>
+        <p style="margin-top: 10px; color: var(--muted); font-size: 0.95rem; line-height: 1.8;">
+          En el marco de la gestión contemporánea de usuarios, innovar no consiste en acumular dispositivos de última generación, sino en <strong>transformar las relaciones pedagógicas y culturales</strong> dentro de la comunidad escolar. La biblioteca escolar innovadora se redefine como un laboratorio vivo de experimentación, co-creación y participación ciudadana, donde convergen el patrimonio impreso, los lenguajes multimodales y la producción colectiva de saberes.
+        </p>
+      </div>
+
+      <!-- FUNDAMENTACIÓN CONCEPTUAL -->
+      <div class="content-card" style="border-left: 5px solid var(--orange);">
+        <span class="badge-tag" style="background: rgba(255,85,0,0.15); color: var(--orange);">Marco Epistemológico</span>
+        <h3 style="margin-bottom: 12px; color: var(--text);">Hacia una Biblioteca Creativa: Del Consumo a la Autoría Comunitaria</h3>
+        <p style="font-size: 0.92rem; color: var(--text); line-height: 1.7; margin-bottom: 12px;">
+          Recuperando los aportes de <strong>Hernández-Serrano et al. (2017)</strong> sobre la transición del prosumidor al <em>prodiseñador</em>, la innovación pedagógica en la biblioteca escolar radica en desplazar al estudiantado de la condición de receptor pasivo para situarlo como co-autor y decisor en su propio ecosistema informativo. Esta perspectiva dialógica dialoga directamente con la visión de la biblioteca como un espacio seguro y participativo consagrado por las directrices de la <strong>IFLA (2015)</strong>.
+        </p>
+        <p style="font-size: 0.92rem; color: var(--text); line-height: 1.7;">
+          La hibridación entre el libro material, la edición artesanal y las tecnologías emergentes (incluida la inteligencia artificial generativa) abre escenarios inéditos para que las juventudes interroguen su realidad territorial, construyan memoria colectiva y hagan circular su propia voz más allá de las paredes del aula.
+        </p>
+      </div>
+
+      <!-- LÍNEAS DE INNOVACIÓN SITUADA -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 24px;">
+        
+        <!-- LÍNEA 1: FANZINOTECA Y AUTOEDICIÓN -->
+        <div class="content-card" style="margin-bottom: 0; border-top: 4px solid var(--orange);">
+          <span class="badge-tag">Cultura Gráfica y Soberanía Expresiva</span>
+          <h3 style="font-size: 1.15rem; color: var(--text); margin-bottom: 8px;">Fanzinoteca Comunitaria y Laboratorio Editorial</h3>
+          <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 12px;">
+            Espacio de micro-edición, collage, encuadernación artesanal y autoedición libre. Rescata el valor táctil y político del papel frente a la inmaterialidad de las redes masivas, habilitando la circulación de poemarios, manifiestos y relatos juveniles.
+          </p>
+          <ul style="padding-left: 18px; font-size: 0.84rem; color: var(--text); line-height: 1.6;">
+            <li>Catalogación y preservación de publicaciones autogestionadas escolares.</li>
+            <li>Talleres de fanzine como herramienta transversal de expresión y memoria.</li>
+            <li>Articulación con editoriales independientes y redes de bibliotecas populares.</li>
+          </ul>
+        </div>
+
+        <!-- LÍNEA 2: NARRATIVAS HÍBRIDAS Y TRANSMEDIA -->
+        <div class="content-card" style="margin-bottom: 0; border-top: 4px solid var(--blue);">
+          <span class="badge-tag blue">Multimodalidad</span>
+          <h3 style="font-size: 1.15rem; color: var(--text); margin-bottom: 8px;">Club de Narrativas Híbridas y Creación Transmedia</h3>
+          <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 12px;">
+            Cruce creativo entre la lectura profunda de literatura impresa, la producción sonora (podcasts y audiocuentos) y el diseño visual asistido por inteligencia artificial generativa, expandiendo los universos de las obras literarias.
+          </p>
+          <ul style="padding-left: 18px; font-size: 0.84rem; color: var(--text); line-height: 1.6;">
+            <li>Booktrailers y reseñas literarias producidas en formatos audiovisuales breves.</li>
+            <li>Reescritura de finales clásicos y adaptación a géneros interactivos.</li>
+            <li>Auditoría ética y remezcla de imágenes generadas para portadas literarias.</li>
+          </ul>
+        </div>
+
+        <!-- LÍNEA 3: CIENCIA CIUDADANA Y TERRITORIO -->
+        <div class="content-card" style="margin-bottom: 0; border-top: 4px solid var(--blue);">
+          <span class="badge-tag blue">Compromiso Territorial</span>
+          <h3 style="font-size: 1.15rem; color: var(--text); margin-bottom: 8px;">Archivos Barriales y Ciencia Ciudadana</h3>
+          <p style="font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 12px;">
+            La biblioteca escolar como nodo de rescate testimonial: recolección comunitaria de historias orales, fotografías familiares e historias locales para digitalizarlas y conformar un repositorio de memoria barrial de acceso abierto.
+          </p>
+          <ul style="padding-left: 18px; font-size: 0.84rem; color: var(--text); line-height: 1.6;">
+            <li>Digitalización participativa de patrimonio histórico local con herramientas libres.</li>
+            <li>Entrevistas intergeneracionales coordinadas entre estudiantes y adultos mayores.</li>
+            <li>Exposiciones documentales abiertas a las familias del barrio.</li>
+          </ul>
+        </div>
+
+        <!-- LÍNEA 4: MAKERSPACE Y APRENDIZAJE HEURÍSTICO (CENTRADA Y BALANCEADA) -->
+        <div class="content-card" style="margin-bottom: 0; border-top: 4px solid var(--orange); grid-column: 1 / -1; max-width: 820px; margin-left: auto; margin-right: auto; width: 100%;">
+          <div style="text-align: center; margin-bottom: 10px;">
+            <span class="badge-tag" style="margin-bottom: 6px;">Cultura Maker</span>
+            <h3 style="font-size: 1.25rem; color: var(--text); margin-bottom: 8px;">Rincón Maker: Desarmar, Explorar y Co-Diseñar</h3>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-bottom: 16px; text-align: center;">
+            Superación del aula expositiva a través de estaciones de indagación activa: robótica educativa de bajo costo, narración con objetos, diseño de juegos de mesa literarios y resolución cooperativa de desafíos informacionales.
+          </p>
+          <ul style="padding-left: 20px; font-size: 0.86rem; color: var(--text); line-height: 1.7; max-width: 650px; margin: 0 auto;">
+            <li>Gamificación de itinerarios de lectura y búsqueda de información documental.</li>
+            <li>Proyectos STEM articulados con perspectiva socio-humanística desde la sala.</li>
+            <li>Espacio de experimentación abierta libre de presiones evaluativas estándar.</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- SÍNTESIS INTEGRADORA Y REFERENCIAS (APA 7) -->
+      <div class="content-card" style="background: var(--bg); padding: 24px;">
+        <strong style="color: var(--blue); font-size: 0.88rem; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+          Sustento Teórico de la Innovación Bibliotecaria (Normas APA 7.ª edición):
+        </strong>
+        <ul style="padding-left: 20px; font-size: 0.84rem; color: var(--muted); line-height: 1.8;">
+          <li>Federación Internacional de Asociaciones de Bibliotecarios y Bibliotecas. (2015). <em>Directrices de la IFLA para la Biblioteca Escolar</em> (2.ª ed. revisada). https://repository.ifla.org/handle/123456789/1096</li>
+          <li>Gómez Hernández, J. A. (2002). <em>Gestión de bibliotecas: texto-guía de las asignaturas de "Biblioteconomía General" y "Bibliotecas Especializadas y Escolares"</em>. Universidad de Murcia.</li>
+          <li>Hernández-Serrano, M. J., Renés-Arellano, P., Graham, G., & Greenhill, A. (2017). Del prosumidor al prodiseñador: el consumo participativo de noticias. <em>Comunicar: Revista Científica de Educomunicación</em>, 25(50), 77-88. https://doi.org/10.3916/C50-2017-07</li>
+          <li>Pasadas Ureña, C. (2008). Multialfabetismo y alfabetización informacional crítica: marco de referencia para la función educativa de la biblioteca. En <em>Brecha digital y nuevas alfabetizaciones</em> (pp. 57-83). Biblioteca Complutense.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer>
+    <img src="logotipo_detonante_web.png" alt="Logo Detonante">
+    <p>
+      <strong>DETONANTE</strong> — Espacio de Lecturas y Culturas Digitales<br>
+      Diseño, curaduría y mediación pedagógica: <span>Marcia Goroz</span>
+    </p>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    // SINTETIZADOR DE MICRO-SONIDO TÁCTIL
+    let audioCtx = null;
+    function playTick() {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(480, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(140, audioCtx.currentTime + 0.04);
+        
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.04);
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.04);
+      } catch (e) {}
+    }
+
+    // CONTROL DEL MENÚ LATERAL
+    function toggleMenu() {
+      const drawer = document.getElementById('sidebar-drawer');
+      const overlay = document.getElementById('sidebar-overlay');
+      if (drawer && overlay) {
+        drawer.classList.toggle('open');
+        overlay.classList.toggle('open');
+      }
+    }
+
+    function selectNav(viewId) {
+      toggleMenu();
+      navigate(viewId);
+    }
+
+    function navigate(viewId) {
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+
+      const target = document.getElementById('view-' + viewId);
+      const targetNav = document.getElementById('nav-' + viewId);
+
+      if (target) target.classList.add('active');
+      if (targetNav) targetNav.classList.add('active');
+
+      if (viewId === 'recursos') {
+        renderTools();
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // BASE DE DATOS EXACTA DE TUS 29 RECURSOS CON CURADURÍA
+    const tools = [
+      // 1. RECURSOS CON IA (10)
+      {
+        name: "ChatGPT (OpenAI)",
+        cat: "ia",
+        logo: "https://cdn.simpleicons.org/openai/000000",
+        dest: "Actores de la comunidad educativa (estudiantes, docentes y familias) y comunidad general interesada en el acceso abierto al conocimiento.",
+        desc: "Modelo de lenguaje generativo para la creación de borradores, lluvia de ideas y asistencia en la resolución de problemas informativos complejos.",
+        val: "Lo recomiendo como un asistente heurístico inicial. Mi rol profesional es mediar para que el alumno lo audite buscando sesgos, exigiendo siempre la transparencia y la cita bibliográfica correcta para evitar el plagio.",
+        link: "https://chat.openai.com"
+      },
+      {
+        name: "Perplexity AI",
+        cat: "ia",
+        logo: "https://cdn.simpleicons.org/perplexity/1F2937",
+        dest: "Estudiantes de nivel superior e investigadores.",
+        desc: "Motor de búsqueda que combina IA con navegación web en tiempo real, proporcionando respuestas con citas directas a las fuentes.",
+        val: "Fundamental para la Alfabetización Informacional (ALFIN). Lo elijo porque obliga al usuario a verificar la trazabilidad de los datos, siendo una herramienta clave para combatir la infodemia y la posverdad.",
+        link: "https://www.perplexity.ai"
+      },
+      {
+        name: "Elicit",
+        cat: "ia",
+        logo: "https://cdn.simpleicons.org/scholar/0047AB",
+        dest: "Bibliotecarios y docentes en formación.",
+        desc: "Utiliza modelos de lenguaje para automatizar etapas de la investigación académica, resumiendo hallazgos clave de artículos científicos.",
+        val: "Es mi recomendación para el servicio de referencia especializada. Optimiza la curación de contenidos académicos de alta calidad, garantizando que el bibliotecario brinde fuentes validadas por la comunidad científica.",
+        link: "https://elicit.com"
+      },
+      {
+        name: "Tome",
+        cat: "ia",
+        logo: "https://cdn.simpleicons.org/airtable/FF5500",
+        dest: "Estudiantes (prodiseñadores) y profesores.",
+        desc: "Genera presentaciones interactivas y narrativas visuales (storytelling) a partir de instrucciones de texto.",
+        val: "Lo selecciono para potenciar la multimodalidad. Permite que la biblioteca escolar sea el espacio donde el usuario transita un recorrido de consumidor pasivo a 'prodiseñador' de su propio conocimiento.",
+        link: "https://tome.app"
+      },
+      {
+        name: "Canva (Magic Studio)",
+        cat: "ia",
+        logo: "https://cdn.simpleicons.org/canva/00C4CC",
+        dest: "Todos los actores de la comunidad educativa (estudiantes, docentes, personal directivo y familias).",
+        desc: "Plataforma 'todo en uno' de uso intuitivo que integra funciones de IA para la creación colaborativa de presentaciones, infografías y recursos visuales, sin requerir conocimientos técnicos previos.",
+        val: "La considero una herramienta indispensable porque rompe las barreras tecnológicas, permitiendo que verdaderamente cualquier usuario pueda crear y estructurar información visual de manera profesional. Fortalece la multialfabetización para expresarse en los distintos formatos y soportes que hoy convergen.",
+        link: "https://www.canva.com"
+      },
+      {
+        name: "Voyant Tools",
+        cat: "ia",
+        logo: "https://cdn.simpleicons.org/w3c/0047AB",
+        dest: "Estudiantes de nivel superior y docentes.",
+        desc: "Plataforma web de código abierto para el análisis de texto y minería de datos. Realiza recuentos automáticos de frecuencias de palabras en grandes corpus documentales y genera visualizaciones interactivas (herramienta 'Cirrus').",
+        val: "Lo elijo para introducir a los alumnos en la 'lectura distante'. Es un recurso de ALFIN avanzado que les permite interrogar a la literatura desde una lógica computacional y estadística, descubriendo patrones ocultos que pasarían desapercibidos.",
+        link: "https://voyant-tools.org"
+      },
+      {
+        name: "Scite.ai",
+        cat: "ia",
+        logo: "https://cdn.simpleicons.org/scikitlearn/FF5500",
+        dest: "Investigadores y bibliotecarios de institutos superiores.",
+        desc: "Herramienta de investigación que utiliza IA para evaluar el contexto de las citas científicas (Smart Citations). Indica estadísticamente si las investigaciones posteriores apoyan, mencionan neutralmente o contrastan una afirmación específica.",
+        val: "Recomiendo este recurso por su capacidad de validación bibliométrica. Es un pilar fundamental en la educación superior para enseñar que no basta con citar un artículo, sino asegurarse de que la evidencia siga respaldada por la comunidad científica.",
+        link: "https://scite.ai"
+      },
+      {
+        name: "QuillBot",
+        cat: "ia",
+        logo: "https://cdn.simpleicons.org/grammarly/15C39A",
+        dest: "Estudiantes en etapa de redacción y producción de trabajos académicos.",
+        desc: "Asistente de escritura impulsado por IA que ofrece funciones de parafraseo, resumen de textos extensos, sinónimos contextuales y corrección gramatical avanzada.",
+        val: "Lo recomiendo como un tutor de redacción. El bibliotecario puede utilizarlo para enseñar estrategias de síntesis y paráfrasis, ayudando al estudiante a superar el síndrome de la hoja en blanco y a desarrollar su propia voz con honestidad intelectual.",
+        link: "https://quillbot.com"
+      },
+      {
+        name: "Semantic Scholar",
+        cat: "ia",
+        logo: "https://cdn.simpleicons.org/semanticrelease/0047AB",
+        dest: "Cuerpo académico y bibliotecarios de referencia.",
+        desc: "Buscador académico gratuito que utiliza IA para procesar millones de artículos científicos, extrayendo el significado, jerarquizando los resultados según su influencia real y generando resúmenes de un párrafo.",
+        val: "Es indispensable para el servicio de alerta bibliográfica. Ante la sobreabundancia de datos, permite al bibliotecario filtrar el 'ruido informativo' y ofrecer a los docentes investigadores únicamente los avances más significativos.",
+        link: "https://www.semanticscholar.org"
+      },
+      {
+        name: "Gamma App",
+        cat: "ia",
+        logo: "https://cdn.simpleicons.org/gumroad/FF5500",
+        dest: "Docentes para la planificación de clases y estudiantes para exposiciones.",
+        desc: "Generación automática de micro-sitios web, documentos y presentaciones visuales profesionales a partir de esquemas básicos de contenido o instrucciones de texto.",
+        val: "La selecciono por su eficiencia en la arquitectura de la información visual. Agiliza drásticamente el tiempo de diseño técnico, permitiendo que el usuario concentre su esfuerzo cognitivo en la calidad de la investigación y en su defensa oral.",
+        link: "https://gamma.app"
+      },
+
+      // 2. FORMACIÓN DOCENTE / ISFD (10)
+      {
+        name: "Zotero",
+        cat: "formacion",
+        logo: "https://cdn.simpleicons.org/zotero/CC2936",
+        dest: "Estudiantes de formación docente y bibliotecarios.",
+        desc: "Gestor de referencias bibliográficas de código abierto integrado al navegador. Facilita la captura de metadatos, la organización de bibliotecas personales y la generación automática de citas y bibliografías (formato APA).",
+        val: "Es mi recomendación principal para la gestión de la información personal. Al ser gratuito y de código abierto, garantiza que el futuro docente adquiera autonomía tecnológica y mantenga el hábito de respetar los derechos de autor.",
+        link: "https://www.zotero.org"
+      },
+      {
+        name: "Portal Eduteka",
+        cat: "formacion",
+        logo: "https://cdn.simpleicons.org/edx/0047AB",
+        dest: "Docentes en formación y bibliotecarios de nivel superior.",
+        desc: "Portal educativo especializado en la integración de las TIC en el aula y en el desarrollo de Competencias para el Manejo de la Información (CMI).",
+        val: "Lo considero la 'biblia pedagógica' del futuro docente. Ofrece secuencias didácticas concretas para que los profesores aprendan a enseñar la Alfabetización Informacional de manera transversal en sus futuras aulas.",
+        link: "https://eduteka.icesi.edu.co"
+      },
+      {
+        name: "SciELO",
+        cat: "formacion",
+        logo: "https://cdn.simpleicons.org/springer/0047AB",
+        dest: "Estudiantes de formación docente, profesores e investigadores.",
+        desc: "Biblioteca electrónica de acceso abierto que abarca una colección seleccionada de revistas científicas de Iberoamérica.",
+        val: "Pilar fundamental para la investigación docente. Garantiza que los estudiantes del ISFD construyan sus marcos teóricos basándose en evidencia rigurosa, revisada por pares y enfocada en problemáticas de nuestra propia región.",
+        link: "https://scielo.org"
+      },
+      {
+        name: "Redalyc",
+        cat: "formacion",
+        logo: "https://cdn.simpleicons.org/openaccess/FF5500",
+        dest: "Comunidad académica y bibliotecarios de referencia.",
+        desc: "Red de Revistas Científicas de América Latina y el Caribe, España y Portugal. Sistema de información científica de acceso abierto (Open Access).",
+        val: "Herramienta de soberanía informativa. Es vital para que el instituto fomente en sus investigadores el consumo de la ciencia producida desde y para Latinoamérica, combatiendo el sesgo de los índices anglosajones de pago.",
+        link: "https://www.redalyc.org"
+      },
+      {
+        name: "OpenAlex",
+        cat: "formacion",
+        logo: "https://cdn.simpleicons.org/openbadges/FFD000",
+        dest: "Bibliotecarios de referencia e investigadores.",
+        desc: "Catálogo global masivo, gratuito y abierto que indexa cientos de millones de trabajos de investigación científica, perfiles de autores y conceptos.",
+        val: "Una herramienta de justicia informativa. Democratiza la ciencia, permitiendo que un instituto público acceda exactamente al mismo nivel de datos e índices métricos que las universidades con presupuestos millonarios.",
+        link: "https://openalex.org"
+      },
+      {
+        name: "ERIC",
+        cat: "formacion",
+        logo: "https://cdn.simpleicons.org/archiveofourown/0047AB",
+        dest: "Docentes, investigadores y estudiantes de pedagogía.",
+        desc: "Base de datos mundial patrocinada por EE.UU. enfocada en educación, proporcionando acceso a artículos de revistas, reportes y documentos técnicos.",
+        val: "Referente histórico en investigación pedagógica. Como bibliotecaria, lo recomiendo para instruir en el uso de lenguajes controlados (Tesauros) complejos, localizando evidencia de máxima autoridad metodológica.",
+        link: "https://eric.ed.gov"
+      },
+      {
+        name: "Dialnet",
+        cat: "formacion",
+        logo: "https://cdn.simpleicons.org/academia/A6192E",
+        dest: "Comunidad académica hispanohablante.",
+        desc: "El mayor portal de difusión de la producción científica hispana. Recopila artículos, tesis doctorales y actas de congresos en nuestro idioma.",
+        val: "Lo recomiendo fundamentalmente para defender nuestra lengua. Es vital poner en valor y citar la producción académica regional frente a la hegemonía del inglés en las ciencias sociales.",
+        link: "https://dialnet.unirioja.es"
+      },
+      {
+        name: "DSpace",
+        cat: "formacion",
+        logo: "https://cdn.simpleicons.org/databricks/0047AB",
+        dest: "Bibliotecarios de sistemas y autoridades del ISFD.",
+        desc: "Software de código abierto diseñado para crear, gestionar y preservar repositorios digitales institucionales y trabajos académicos.",
+        val: "Lo selecciono para la preservación de la memoria institucional. Evita que las investigaciones y tesis producidas por el propio Instituto se pierdan, haciéndolas visibles al mundo.",
+        link: "https://dspace.org"
+      },
+      {
+        name: "Moodle",
+        cat: "formacion",
+        logo: "https://cdn.simpleicons.org/moodle/F98012",
+        dest: "Docentes, estudiantes de profesorado y bibliotecarios gestores de plataformas.",
+        desc: "Entorno Virtual de Enseñanza y Aprendizaje (EVEA) de código abierto más utilizado a nivel global para gestión de contenidos y cursos a distancia o semipresenciales.",
+        val: "Plataforma ideal para consolidar el trabajo colaborativo entre docente y bibliotecario. Dominar Moodle nos permite formar un equipo pedagógico, integrando recursos de Alfabetización Informacional directamente en las asignaturas.",
+        link: "https://moodle.org"
+      },
+      {
+        name: "eXeLearning",
+        cat: "formacion",
+        logo: "https://cdn.simpleicons.org/gnometerminal/0047AB",
+        dest: "Estudiantes de formación docente y cuerpo académico.",
+        desc: "Programa de código abierto indispensable para el diseño de objetos de aprendizaje y secuencias didácticas interactivas exportables a diversas plataformas.",
+        val: "Ideal para potenciar el rol del docente como prodiseñador: los futuros maestros aprenden a adecuar la información y crear sus propios Recursos Educativos Abiertos (REA) de forma accesible y profesional.",
+        link: "https://exelearning.net"
+      },
+
+      // 3. GESTIÓN Y MEDIACIÓN ESCOLAR (9)
+      {
+        name: "Programa Aguapey",
+        cat: "gestion",
+        logo: "https://cdn.simpleicons.org/bookstack/0047AB",
+        dest: "Bibliotecarios escolares de la República Argentina.",
+        desc: "Software de gestión bibliotecaria distribuido gratuitamente por la BNM para la automatización, catalogación (MARC21) y préstamos en las escuelas.",
+        val: "Pilar histórico de la normalización técnica en las escuelas argentinas. Sin embargo, mi mirada crítica advierte que su arquitectura de escritorio está quedando obsoleta: debemos conocerlo pero impulsando la migración hacia sistemas web.",
+        link: "http://www.bnm.me.gov.ar/redes_federales/aguapey/"
+      },
+      {
+        name: "Koha SIGB",
+        cat: "gestion",
+        logo: "https://cdn.simpleicons.org/kodi/0047AB",
+        dest: "Bibliotecarios escolares e institucionales.",
+        desc: "Sistema Integrado de Gestión de Bibliotecas (SIGB) de software libre, con catálogo de acceso público en línea (OPAC web) y alta parametrización.",
+        val: "Mi apuesta definitiva para la modernización de la gestión escolar. Su potente OPAC web rompe los muros de la escuela, democratizando el acceso a la información 24/7 bajo estándares internacionales (ISO, Formato MARC).",
+        link: "https://koha-community.org"
+      },
+      {
+        name: "PMB (PhpMyBibli)",
+        cat: "gestion",
+        logo: "https://cdn.simpleicons.org/php/777BB4",
+        dest: "Bibliotecas escolares de nivel secundario.",
+        desc: "SIGB integral en entorno web que cuenta con módulos de préstamos y capacidad de repositorio para enlazar el catálogo físico con recursos digitales.",
+        val: "Permite integrar la colección en papel con los Recursos Educativos Abiertos (REA) digitales, asegurando que la biblioteca actúe como un Centro de Recursos para el Aprendizaje (CRA) que centraliza toda la producción de la escuela.",
+        link: "https://www.sigb.net"
+      },
+      {
+        name: "Mendeley",
+        cat: "gestion",
+        logo: "https://cdn.simpleicons.org/mendeley/D90000",
+        dest: "Estudiantes de los últimos años del nivel secundario y profesores.",
+        desc: "Gestor bibliográfico y red social que permite almacenar PDFs, organizarlos e insertar citas de manera automatizada.",
+        val: "Se fundamenta en la necesidad ineludible de articular el nivel secundario con el nivel superior. Introducir tempranamente el uso de gestores y Normas APA combate el plagio y dota a los jóvenes de competencias ALFIN cruciales.",
+        link: "https://www.mendeley.com"
+      },
+      {
+        name: "Goodreads",
+        cat: "gestion",
+        logo: "https://cdn.simpleicons.org/goodreads/754228",
+        dest: "Alumnos, docentes, familias y comunidad lectora.",
+        desc: "Red social de lectura que permite reseñar obras, crear estantes virtuales y gestionar clubes de lectura digitales interactivos.",
+        val: "Instrumento esencial para la extensión cultural en la era de las multipantallas. Permite intervenir pedagógicamente en el entorno natural de los nativos digitales, redimensionando el rol mediador en la identidad lectora.",
+        link: "https://www.goodreads.com"
+      },
+      {
+        name: "Google Workspace (Drive)",
+        cat: "gestion",
+        logo: "https://cdn.simpleicons.org/googledrive/4285F4",
+        dest: "Comunidad escolar completa (alumnos, docentes y familias).",
+        desc: "Entorno gratuito de almacenamiento en la nube y ofimática. Permite edición simultánea de textos y planillas, y relevamientos mediante formularios.",
+        val: "El entorno virtual por excelencia para democratizar el trabajo colaborativo: rompe barreras de tiempo y espacio, garantizando un acceso igualitario a la co-creación de conocimiento como prosumidores activos.",
+        link: "https://drive.google.com"
+      },
+      {
+        name: "Padlet",
+        cat: "gestion",
+        logo: "https://cdn.simpleicons.org/padlet/FF5500",
+        dest: "Estudiantes, docentes y bibliotecarios.",
+        desc: "Pizarra virtual multimedia donde los usuarios pueden organizar visualmente ideas, enlaces, reflexiones o resultados de investigación.",
+        val: "Útil para potenciar la multialfabetización y la socialización del conocimiento. Convierte a la biblioteca en un entorno interactivo donde el usuario abandona su rol de receptor pasivo para responsabilizarse de su producción.",
+        link: "https://padlet.com"
+      },
+      {
+        name: "Portal Educ.ar",
+        cat: "gestion",
+        logo: "https://cdn.simpleicons.org/googleclassroom/0047AB",
+        dest: "Alumnos, docentes y familias argentinas.",
+        desc: "Portal educativo oficial del Ministerio de Educación que provee secuencias didácticas, videos y software educativo curado bajo la Ley 26.206.",
+        val: "Recurso de cabecera para garantizar la equidad y accesibilidad. Asegura que los materiales digitales sugeridos cuenten con el máximo respaldo institucional, pedagógico y político del Estado Nacional (NAP).",
+        link: "https://educ.ar"
+      },
+      {
+        name: "Biblioteca Nacional de Maestras y Maestros (BNM)",
+        cat: "gestion",
+        logo: "https://cdn.simpleicons.org/govuk/0047AB",
+        dest: "Bibliotecarios escolares, equipos directivos y docentes.",
+        desc: "Organismo rector que provee normativas, Directrices IFLA/UNESCO nacionalizadas, manuales de procedimientos y coordinación federal.",
+        val: "Referente institucional indispensable. Su consulta no es opcional: nos provee del marco normativo (Ley 26.917) para profesionalizar nuestras prácticas y defender la biblioteca como espacio de justicia social y educativa.",
+        link: "http://www.bnm.me.gov.ar"
+      }
+    ];
+
+    let currentCategory = 'todas';
+
+    // RENDERIZADOR EDITORIAL DE FICHAS CON TU CURADURÍA COMPLETA
+    function renderTools() {
+      const container = document.getElementById('tools-container');
+      const searchEl = document.getElementById('search-input');
+      const query = searchEl ? searchEl.value.toLowerCase().trim() : '';
+
+      if (!container) return;
+
+      const filtered = tools.filter(t => {
+        const matchesCategory = (currentCategory === 'todas') || (t.cat === currentCategory);
+        const matchesQuery = t.name.toLowerCase().includes(query) ||
+                             t.desc.toLowerCase().includes(query) ||
+                             t.dest.toLowerCase().includes(query) ||
+                             t.val.toLowerCase().includes(query);
+        return matchesCategory && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 40px;">No se encontraron herramientas con ese criterio.</p>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(t => `
+        <div class="resource-card">
+          <div>
+            <div class="resource-header">
+              <img src="${t.logo}" class="resource-logo" alt="Logo de ${t.name}" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+              <span class="logo-fallback" style="display:none; width:36px; height:36px; border-radius:8px; background:var(--orange); color:#FFF; font-weight:700; font-size:0.9rem; align-items:center; justify-content:center; flex-shrink:0;">${t.name.charAt(0)}</span>
+              <span class="resource-title">${t.name}</span>
+            </div>
+
+            <div class="field-box">
+              <span class="field-label" style="color:var(--blue);">Destinatarios</span>
+              <div class="field-dest">${t.dest}</div>
+            </div>
+
+            <div class="field-box" style="margin-top:10px;">
+              <span class="field-label">Utilidad / Comentarios</span>
+              <p style="color:var(--text);">${t.desc}</p>
+            </div>
+
+            <div class="field-box" style="margin-top:12px;">
+              <span class="field-label" style="color:var(--orange);">Valoración de Marcia Goroz</span>
+              <div class="field-val">"${t.val}"</div>
+            </div>
+          </div>
+
+          <div style="padding-top:14px; border-top:1px solid var(--border); display:flex; justify-content:flex-end;">
+            <a href="${t.link}" target="_blank" rel="noopener noreferrer" class="tool-link">
+              Acceder al recurso oficial →
+            </a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function setCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderTools();
+    }
+
+    function filterTools() {
+      renderTools();
+    }
+
+    // FUNCIÓN UNIVERSAL DE COPIADO AL PORTAPAPELES (COMPATIBLE CON file:///)
+    function copyCitation(elementId, btn) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const textToCopy = el.innerText || el.textContent;
+
+      const triggerFeedback = () => {
+        const originalText = btn.innerText;
+        btn.innerText = "✓ ¡Cita copiada!";
+        btn.style.backgroundColor = "var(--orange)";
+        btn.style.color = "#FFFFFF";
+        btn.style.borderColor = "var(--orange)";
+
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.style.backgroundColor = "#FFFFFF";
+          btn.style.color = "var(--text)";
+          btn.style.borderColor = "var(--border)";
+        }, 2200);
+      };
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          triggerFeedback();
+        }).catch(() => {
+          fallbackCopy(textToCopy);
+          triggerFeedback();
+        });
+      } else {
+        fallbackCopy(textToCopy);
+        triggerFeedback();
+      }
+    }
+
+    function fallbackCopy(text) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      textArea.style.top = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+      } catch (err) {}
+      document.body.removeChild(textArea);
+    }
+
+    // CARGA INICIAL AUTOMÁTICA
+    window.addEventListener('DOMContentLoaded', () => {
+      renderTools();
+    });
+    renderTools();
+  </script>
+</body>
+</html>
